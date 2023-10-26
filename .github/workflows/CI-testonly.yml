@@ -28,7 +28,7 @@ jobs:
           cache: maven
 
       - name: Build with Maven and test
-        run: mvn clean install
+        run: mvn --batch-mode --update-snapshots verify
         working-directory: ./EmployeeWorkOrderManagment
 
 
