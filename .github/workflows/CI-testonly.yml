@@ -29,6 +29,7 @@ jobs:
 
       - name: Build with Maven and test
         run: mvn clean install
+        working-directory: ./EmployeeWorkOrderManagment
 
 
 
