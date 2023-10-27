@@ -20,6 +20,12 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
+      - name: Install NPM dependencies and build frontend
+	uses: actions/setup-node@v3
+      - run: npm install
+	working-directory: ./EmployeeWorkOrderManagment/src/main/frontend
+      - run: npm run build
+
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
