@@ -21,9 +21,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install NPM dependencies and build frontend
-	uses: actions/setup-node@v3
+        uses: actions/setup-node@v3
       - run: npm install
-	working-directory: ./EmployeeWorkOrderManagment/src/main/frontend
+        working-directory: ./EmployeeWorkOrderManagment/src/main/frontend
       - run: npm run build
 
       - name: Set up Java
@@ -36,6 +36,3 @@ jobs:
       - name: Build with Maven and test
         run: mvn --batch-mode --update-snapshots verify
         working-directory: ./EmployeeWorkOrderManagment
-
-
-
