@@ -26,6 +26,7 @@ jobs:
       - run: npm install
         working-directory: ./EmployeeWorkOrderManagment/src/main/frontend
       - run: npm run build
+        working-directory: ./EmployeeWorkOrderManagment/src/main/frontend
 
       - name: Set up Java
         uses: actions/setup-java@v3
