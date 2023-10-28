@@ -10,6 +10,7 @@ on:
     branches:
       - main
       - develop
+  workflow_dispatch: {}
 
 jobs:
   build:
@@ -20,16 +21,20 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
+      - name: Install NPM dependencies and build frontend
+        uses: actions/setup-node@v3
+      - run: npm install
+        working-directory: ./EmployeeWorkOrderManagment/src/main/frontend
+      - run: npm run build
+        working-directory: ./EmployeeWorkOrderManagment/src/main/frontend
+
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: "17"
+          distribution: "temurin"
           cache: maven
 
       - name: Build with Maven and test
         run: mvn --batch-mode --update-snapshots verify
         working-directory: ./EmployeeWorkOrderManagment
-
-
-

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link th:href="@{/main.css}" rel="stylesheet" />
+    <script th:src="@{/js/main.js}" defer></script>
+    <title>Employee Work Order Manager</title>
+</head>
+<body class="bg-slate-50 dark:bg-black dark:text-white flex flex-col min-h-screen">
+    <th:block th:replace="~{fragments/fragments::common-header}"></th:block>
+
+    <th:block th:replace="~{fragments/fragments::common-footer}"></th:block>
+</body>
+</html>
