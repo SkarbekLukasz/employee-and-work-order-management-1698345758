@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Fragment</title>
+</head>
+<body>
+    <header th:fragment="common-header" id="header" class="bg-teal-700 text-white sticky top-0 z-10">
+        <section class="max-w-7xl max-auto p-4 flex justify-around items-center">
+            <h1 class="text-3xl font-medium">
+                <a href="#">👔 Employee Work Order Manager</a>
+            </h1>
+            <div>
+                <button id="hamburger-button" class="text-3xl md:hidden cursor-pointer relative w-8 h-8">
+                    <div class="bg-white w-8 h-1 rounded absolute top-4 -mt-0.5 transition-all duration-500
+                    before:content-['']
+                    before:bg-white
+                    before:w-8
+                    before:h-1
+                    before:rounded
+                    before:absolute
+                    before:-translate-x-4
+                    before:-translate-y-3
+                    before:transition-all
+                    before:duration-500
+                    after:content-['']
+                    after:bg-white
+                    after:w-8
+                    after:h-1
+                    after:rounded
+                    after:absolute
+                    after:-translate-x-4
+                    after:translate-y-3
+                    after:transition-all
+                    after:duration-500">
+                    </div>
+                </button>
+                <nav class="hidden md:block space-x-8 text-xl" aria-label="main">
+                    <a href="#" class="hover:opacity-90">Home</a>
+                    <a href="#" class="hover:opacity-90">Features</a>
+                    <a href="#" class="hover:opacity-90">About</a>
+                    <a href="#" class="hover:opacity-90">Contact Us</a>
+                </nav>
+            </div>
+        </section>
+        <section id="mobile-menu" class="absolute top-0 bg-black w-full text-5xl flex-col justify-content-center origin-top animate-open-menu hidden">
+            <button class="text-8xl self-end px-6">
+                &times;
+            </button>
+            <nav class="flex flex-col min-h-screen items-center py-8" aria-label="mobile">
+                <a href="#" class="hover:opacity-90 w-full text-center py-6">Home</a>
+                <a href="#" class="hover:opacity-90">Features</a>
+                <a href="#" class="hover:opacity-90">About</a>
+                <a href="#" class="hover:opacity-90">Contact Us</a>
+            </nav>
+        </section>
+    </header>
+    <footer th:fragment="common-footer" id="footer" class="bg-teal-700 text-white text-xl mt-auto">
+        <section class="max-w-4xl mx-auto p-4 flex flex-col sm:flex-row sm:justify-between">
+            <nav class="hidden md:flex flex-col gap-2" aria-label="footer">
+                <a href="#" class="hover:opacity-90">Home</a>
+                <a href="#" class="hover:opacity-90">Features</a>
+                <a href="#" class="hover:opacity-90">About</a>
+                <a href="#" class="hover:opacity-90">Contact Us</a>
+            </nav>
+            <div class="flex flex-col sm:gap-2">
+                <p class="text-right">
+                    Copyright &copy; <span id="year">2023 <a href="https://github.com/SkarbekLukasz">Łukasz Skarbek</a></span>
+                </p>
+            </div>
+        </section>
+    </footer>
+</body>
+</html>
