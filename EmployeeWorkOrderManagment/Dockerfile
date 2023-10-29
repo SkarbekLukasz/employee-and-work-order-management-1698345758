@@ -13,5 +13,5 @@ RUN mvn clean package
 FROM eclipse-temurin:17
 VOLUME /tmp
 EXPOSE 8080
-COPY target/*.jar app.jar
+COPY ./target/*.jar app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
