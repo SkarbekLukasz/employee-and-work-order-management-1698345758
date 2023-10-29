@@ -44,7 +44,8 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v4
       with:
-        context: ./EmployeeWorkOrderManagment
-        file: Dockerfile
+        context: .
+        file: ./EmployeeWorkOrderManagment/Dockerfile
         push: true
         tags: thereallukey/empworkorder:latest
+      
