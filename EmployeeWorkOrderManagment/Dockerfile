@@ -14,6 +14,7 @@ WORKDIR .
 COPY --from=frontend /app .
 RUN mvn clean package
 
+
 # Stage 3: Final Image
 FROM eclipse-temurin:17
 WORKDIR /app
