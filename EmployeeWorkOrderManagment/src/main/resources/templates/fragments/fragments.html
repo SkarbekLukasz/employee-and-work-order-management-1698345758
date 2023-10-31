@@ -1,74 +1,133 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Fragment</title>
-</head>
-<body>
-    <header th:fragment="common-header" id="header" class="bg-teal-700 text-white sticky top-0 z-10">
-        <section class="max-w-7xl max-auto p-4 flex justify-around items-center">
-            <h1 class="text-3xl font-medium">
-                <a href="#">👔 Employee Work Order Manager</a>
-            </h1>
-            <div>
-                <button id="hamburger-button" class="text-3xl md:hidden cursor-pointer relative w-8 h-8">
-                    <div class="bg-white w-8 h-1 rounded absolute top-4 -mt-0.5 transition-all duration-500
-                    before:content-['']
-                    before:bg-white
-                    before:w-8
-                    before:h-1
-                    before:rounded
-                    before:absolute
-                    before:-translate-x-4
-                    before:-translate-y-3
-                    before:transition-all
-                    before:duration-500
-                    after:content-['']
-                    after:bg-white
-                    after:w-8
-                    after:h-1
-                    after:rounded
-                    after:absolute
-                    after:-translate-x-4
-                    after:translate-y-3
-                    after:transition-all
-                    after:duration-500">
-                    </div>
-                </button>
-                <nav class="hidden md:block space-x-8 text-xl" aria-label="main">
-                    <a href="#" class="hover:opacity-90">Home</a>
-                    <a href="#" class="hover:opacity-90">Features</a>
-                    <a href="#" class="hover:opacity-90">About</a>
-                    <a href="#" class="hover:opacity-90">Contact Us</a>
-                </nav>
-            </div>
-        </section>
-        <section id="mobile-menu" class="absolute top-0 bg-black w-full text-5xl flex-col justify-content-center origin-top animate-open-menu hidden">
-            <button class="text-8xl self-end px-6">
-                &times;
-            </button>
-            <nav class="flex flex-col min-h-screen items-center py-8" aria-label="mobile">
-                <a href="#" class="hover:opacity-90 w-full text-center py-6">Home</a>
-                <a href="#" class="hover:opacity-90">Features</a>
-                <a href="#" class="hover:opacity-90">About</a>
-                <a href="#" class="hover:opacity-90">Contact Us</a>
-            </nav>
-        </section>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header th:fragment="common-header" id="header">
+      <nav class="light:bg-white border-gray-200 dark:bg-gray-900">
+        <div
+          class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+        >
+          <a href="#" class="flex items-center">
+            <svg
+              class="w-[42px] h-[42px] light:text-gray-800 dark:text-white px-2"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-width="2"
+                d="M1 10c1.5 1.5 5.25 3 9 3s7.5-1.5 9-3m-9-1h.01M2 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1ZM14 5V3a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2h8Z"
+              />
+            </svg>
+            <span
+              class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+              >Employee Work Order Manager</span
+            >
+          </a>
+          <button
+            data-collapse-toggle="navbar-default"
+            type="button"
+            class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            aria-controls="navbar-default"
+            aria-expanded="false"
+          >
+            <span class="sr-only">Open main menu</span>
+            <svg
+              class="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 17 14"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 1h15M1 7h15M1 13h15"
+              />
+            </svg>
+          </button>
+          <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+            <ul
+              class="font-medium flex flex-col p-4 md:p-0 mt-4 border light:border-gray-100 rounded-lg light:bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:light:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
+            >
+              <li>
+                <a
+                  href="#"
+                  class="block py-2 pl-3 pr-4 light:text-white light:bg-blue-700 rounded md:bg-transparent light:md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+                  aria-current="page"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="block py-2 pl-3 pr-4 light:text-gray-900 rounded hover:light:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:light:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  >About</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="block py-2 pl-3 pr-4 light:text-gray-900 rounded hover:light:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:light:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  >Features</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="block py-2 pl-3 pr-4 light:text-gray-900 rounded hover:light:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:light:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  >Contact Us</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
     </header>
-    <footer th:fragment="common-footer" id="footer" class="bg-teal-700 text-white text-xl mt-auto">
-        <section class="max-w-4xl mx-auto p-4 flex flex-col sm:flex-row sm:justify-between">
-            <nav class="hidden md:flex flex-col gap-2" aria-label="footer">
-                <a href="#" class="hover:opacity-90">Home</a>
-                <a href="#" class="hover:opacity-90">Features</a>
-                <a href="#" class="hover:opacity-90">About</a>
-                <a href="#" class="hover:opacity-90">Contact Us</a>
-            </nav>
-            <div class="flex flex-col sm:gap-2">
-                <p class="text-right">
-                    Copyright &copy; <span id="year">2023 <a href="https://github.com/SkarbekLukasz">Łukasz Skarbek</a></span>
-                </p>
-            </div>
-        </section>
+    <footer
+      th:fragment="common-footer"
+      id="footer"
+      class="fixed bottom-0 left-0 z-20 w-full p-4 light:bg-white border-t light:border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 dark:border-gray-600"
+    >
+      <div
+        class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between"
+      >
+        <span
+          class="text-sm light:text-gray-500 sm:text-center dark:text-gray-400"
+          >© 2023
+          <a href="https://github.com/SkarbekLukasz" class="hover:underline"
+            >Łukasz Skarbek™</a
+          >. All Rights Reserved.
+        </span>
+        <ul
+          class="flex flex-wrap items-center mt-3 text-sm font-medium light:text-gray-500 dark:text-gray-400 sm:mt-0"
+        >
+          <li>
+            <a href="#" class="mr-4 hover:underline md:mr-6">About</a>
+          </li>
+          <li>
+            <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
+          </li>
+          <li>
+            <a href="#" class="hover:underline">Contact Us</a>
+          </li>
+        </ul>
+      </div>
     </footer>
-</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
+  </body>
 </html>

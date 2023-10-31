@@ -4,8 +4,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link th:href="@{/main.css}" rel="stylesheet" />
-    <script th:src="@{/js/main.js}" defer></script>
     <title>Employee Work Order Manager</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body
     class="bg-slate-50 dark:bg-black dark:text-white flex flex-col min-h-screen"
@@ -13,5 +16,6 @@
     <th:block th:replace="~{fragments/fragments::common-header}"></th:block>
 
     <th:block th:replace="~{fragments/fragments::common-footer}"></th:block>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
   </body>
 </html>
