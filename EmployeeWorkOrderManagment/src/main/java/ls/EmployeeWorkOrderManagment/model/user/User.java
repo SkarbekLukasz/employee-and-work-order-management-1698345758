@@ -2,15 +2,21 @@ package ls.EmployeeWorkOrderManagment.model.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import ls.EmployeeWorkOrderManagment.model.role.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
-
+@Builder
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+@AllArgsConstructor
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -34,14 +40,6 @@ public class User implements UserDetails {
     @Column(nullable = false, length = 64)
     @NotNull @Size(max = 64, min = 8) @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}")
     private String password;
-    @Column(name = "non_expired")
-    private boolean accountNonExpired;
-    @Column(name = "non_locked")
-    private boolean accountNonLocked;
-    @Column(name = "credentials_non_expired")
-    private boolean credentialsNonExpired;
-    @Column(name = "enabled")
-    private boolean enabled;
 
     public Set<Role> getRoles() {
         return roles;
@@ -63,6 +61,10 @@ public class User implements UserDetails {
         return email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -82,47 +84,5 @@ public class User implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Role> roles = this.getRoles();
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-        for(Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-        }
-        return authorities;
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return this.accountNonExpired;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return this.accountNonLocked;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return this.credentialsNonExpired;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
-
 
 }
