@@ -1,9 +1,14 @@
-package ls.EmployeeWorkOrderManagment.model.user;
+package ls.EmployeeWorkOrderManagment.model.role;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
-
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "roles")
 public class Role {
