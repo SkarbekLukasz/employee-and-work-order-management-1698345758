@@ -10,7 +10,9 @@
   </head>
   <body>
     <header th:fragment="common-header" id="header">
-      <nav class="bg-white border-gray-200 dark:bg-gray-800 dark:bg-border-gray-600">
+      <nav
+        class="bg-white border-gray-200 dark:bg-gray-800 dark:bg-border-gray-600"
+      >
         <div class="max-w-screen-xl flex flex-col items-center mx-auto p-4">
           <a href="#" class="flex items-center px-6 mb-4">
             <svg
@@ -105,10 +107,14 @@
                 </button>
               </a>
               <a th:href="@{/login}" href="/login">
-                <button class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
-  <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-      Login
-  </span>
+                <button
+                  class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
+                >
+                  <span
+                    class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+                  >
+                    Login
+                  </span>
                 </button>
               </a>
             </div>
@@ -124,8 +130,36 @@
       <div
         class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between"
       >
-        <span
-          class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
+        <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
+          >© 2023
+          <a href="https://github.com/SkarbekLukasz" class="hover:underline"
+            >Łukasz Skarbek™</a
+          >. All Rights Reserved.
+        </span>
+        <ul
+          class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0"
+        >
+          <li>
+            <a href="#" class="mr-4 hover:underline md:mr-6">About</a>
+          </li>
+          <li>
+            <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
+          </li>
+          <li>
+            <a href="#" class="hover:underline">Contact Us</a>
+          </li>
+        </ul>
+      </div>
+    </footer>
+    <footer
+      th:fragment="common-footer-sticky"
+      id="footer"
+      class="fixed bottom-0 left-0 z-20 w-full p-4 bg-white border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 dark:border-gray-600"
+    >
+      <div
+        class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between"
+      >
+        <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
           >© 2023
           <a href="https://github.com/SkarbekLukasz" class="hover:underline"
             >Łukasz Skarbek™</a
