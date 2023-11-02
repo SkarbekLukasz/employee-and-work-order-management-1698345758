@@ -3,7 +3,6 @@ package ls.EmployeeWorkOrderManagment.service;
 import ls.EmployeeWorkOrderManagment.dao.UserRepository;
 import ls.EmployeeWorkOrderManagment.dto.UserCredentialsDto;
 import ls.EmployeeWorkOrderManagment.dto.UserCredentialsDtoMapper;
-import ls.EmployeeWorkOrderManagment.model.user.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

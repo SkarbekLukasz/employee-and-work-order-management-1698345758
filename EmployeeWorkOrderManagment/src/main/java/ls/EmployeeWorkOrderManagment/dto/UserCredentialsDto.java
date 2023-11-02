@@ -1,8 +1,6 @@
 package ls.EmployeeWorkOrderManagment.dto;
 
-import jakarta.validation.constraints.*;
 import lombok.Builder;
-import ls.EmployeeWorkOrderManagment.model.role.Role;
 
 import java.io.Serializable;
 import java.util.Set;
