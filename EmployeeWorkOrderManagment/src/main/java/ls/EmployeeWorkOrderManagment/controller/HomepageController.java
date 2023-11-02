@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class HomepageController {
-    @GetMapping("")
+    @GetMapping("/")
     public String getHomepage() {
         return "index";
     }
