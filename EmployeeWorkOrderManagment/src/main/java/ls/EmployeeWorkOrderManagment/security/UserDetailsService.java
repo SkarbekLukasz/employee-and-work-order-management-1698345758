@@ -1,6 +1,6 @@
 package ls.EmployeeWorkOrderManagment.security;
 
-import ls.EmployeeWorkOrderManagment.dto.UserCredentialsDto;
+import ls.EmployeeWorkOrderManagment.dto.user.UserCredentialsDto;
 import ls.EmployeeWorkOrderManagment.service.UserService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

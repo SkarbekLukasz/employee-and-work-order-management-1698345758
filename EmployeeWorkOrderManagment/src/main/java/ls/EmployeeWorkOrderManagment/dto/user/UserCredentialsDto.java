@@ -1,4 +1,4 @@
-package ls.EmployeeWorkOrderManagment.dto;
+package ls.EmployeeWorkOrderManagment.dto.user;
 
 import lombok.Builder;
 

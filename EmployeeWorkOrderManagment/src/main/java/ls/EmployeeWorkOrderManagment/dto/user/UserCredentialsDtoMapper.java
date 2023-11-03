@@ -1,5 +1,6 @@
-package ls.EmployeeWorkOrderManagment.dto;
+package ls.EmployeeWorkOrderManagment.dto.user;
 
+import ls.EmployeeWorkOrderManagment.dto.user.UserCredentialsDto;
 import ls.EmployeeWorkOrderManagment.model.role.Role;
 import ls.EmployeeWorkOrderManagment.model.user.User;
 
