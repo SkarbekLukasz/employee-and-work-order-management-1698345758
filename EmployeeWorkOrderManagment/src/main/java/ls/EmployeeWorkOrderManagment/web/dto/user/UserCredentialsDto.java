@@ -1,12 +1,13 @@
-package ls.EmployeeWorkOrderManagment.dto.user;
+package ls.EmployeeWorkOrderManagment.web.dto.user;
 
 import lombok.Builder;
+import ls.EmployeeWorkOrderManagment.persistence.model.user.User;
 
 import java.io.Serializable;
 import java.util.Set;
 
 /**
- * DTO for {@link ls.EmployeeWorkOrderManagment.model.user.User}
+ * DTO for {@link User}
  */
 @Builder
 public record UserCredentialsDto(String firstName,

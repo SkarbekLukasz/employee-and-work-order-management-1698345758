@@ -1,4 +1,4 @@
-package ls.EmployeeWorkOrderManagment.model.role;
+package ls.EmployeeWorkOrderManagment.persistence.model.role;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

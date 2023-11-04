@@ -1,6 +1,6 @@
-package ls.EmployeeWorkOrderManagment.dao;
+package ls.EmployeeWorkOrderManagment.persistence.dao;
 
-import ls.EmployeeWorkOrderManagment.model.user.User;
+import ls.EmployeeWorkOrderManagment.persistence.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

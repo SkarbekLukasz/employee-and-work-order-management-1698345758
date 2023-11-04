@@ -1,8 +1,7 @@
-package ls.EmployeeWorkOrderManagment.dto.user;
+package ls.EmployeeWorkOrderManagment.web.dto.user;
 
-import ls.EmployeeWorkOrderManagment.dto.user.UserCredentialsDto;
-import ls.EmployeeWorkOrderManagment.model.role.Role;
-import ls.EmployeeWorkOrderManagment.model.user.User;
+import ls.EmployeeWorkOrderManagment.persistence.model.role.Role;
+import ls.EmployeeWorkOrderManagment.persistence.model.user.User;
 
 import java.util.stream.Collectors;
 

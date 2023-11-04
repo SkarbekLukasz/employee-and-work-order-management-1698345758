@@ -1,20 +1,15 @@
-package ls.EmployeeWorkOrderManagment.model.user;
+package ls.EmployeeWorkOrderManagment.persistence.model.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import ls.EmployeeWorkOrderManagment.model.role.Role;
+import ls.EmployeeWorkOrderManagment.persistence.model.role.Role;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-@Builder
-@NoArgsConstructor
+
 @Entity
 @Table(name = "users")
-@AllArgsConstructor
 public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
