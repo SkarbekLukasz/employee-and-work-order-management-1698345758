@@ -2,12 +2,14 @@ package ls.EmployeeWorkOrderManagment.web.dto.user;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
+import ls.EmployeeWorkOrderManagment.validation.PasswordMatcher;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@PasswordMatcher
 public class UserRegistrationDto {
 
     @NotBlank
