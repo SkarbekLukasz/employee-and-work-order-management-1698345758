@@ -1,5 +1,6 @@
 name: CI Test Only Action
-
+env:
+  MAIL_HOST: ${{MAIL_HOST}}
 on:
   push:
     branches:
