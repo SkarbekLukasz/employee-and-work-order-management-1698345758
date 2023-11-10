@@ -1,6 +1,5 @@
 name: CI Test Only Action
-env:
-  MAIL_HOST: ${{MAIL_HOST}}
+
 on:
   push:
     branches:
@@ -35,6 +34,9 @@ jobs:
           java-version: "17"
           distribution: "temurin"
           cache: maven
+
+      - name: Set up environment variable MAIL_HOST
+        run: echo "MAIL_HOST=${{ env.MAIL_HOST }}" >> $GITHUB_ENV
 
       - name: Build with Maven and test
         run: mvn --batch-mode --update-snapshots verify
