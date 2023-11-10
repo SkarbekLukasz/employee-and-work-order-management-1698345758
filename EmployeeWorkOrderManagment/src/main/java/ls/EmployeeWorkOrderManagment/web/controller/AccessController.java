@@ -82,7 +82,7 @@ public class AccessController {
     }
 
     @GetMapping("/forgottenPassword")
-    public String forgottenPassword(Model model) {
+    public String forgottenPassword(){
         return "forgottenpassword";
     }
 
@@ -114,7 +114,7 @@ public class AccessController {
         request.getSession().setAttribute("token", token);
         model.addAttribute("user", new UserRegistrationDto());
         model.addAttribute("message", "Password reset successful");
-        return "resetPassword";
+        return "resetpassword";
     }
 
     @PostMapping("/resetPassword")
@@ -124,7 +124,7 @@ public class AccessController {
                                 HttpServletRequest request) {
         if(bindingResult.hasErrors()) {
             System.out.println("errory");
-            return "resetPassword";
+            return "resetpassword";
         } else {
             String token = (String) request.getSession().getAttribute("token");
             userService.changeUserPassword(userRegistrationDto, token);
