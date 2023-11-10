@@ -36,7 +36,7 @@ jobs:
           cache: maven
 
       - name: Set up environment variable MAIL_HOST
-        run: echo "MAIL_HOST=${{ vars.MAIL_HOST }}" >> $GITHUB_ENV
+        run: echo "MAIL_HOST=${{ secrets.MAIL_HOST }}" >> $GITHUB_ENV
 
       - name: Build with Maven and test
         run: mvn --batch-mode --update-snapshots verify
