@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tokens")
+@Table(name = "verification_tokens")
 @Getter
 @Setter
 @NoArgsConstructor
