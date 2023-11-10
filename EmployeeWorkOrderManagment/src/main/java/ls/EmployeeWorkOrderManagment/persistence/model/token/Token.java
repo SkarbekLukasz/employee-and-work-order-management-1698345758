@@ -4,4 +4,5 @@ import java.util.Date;
 
 public interface Token {
     Date calculateExpiryDate(int expiryTimeInMinutes);
+    Date getExpiryDate();
 }
