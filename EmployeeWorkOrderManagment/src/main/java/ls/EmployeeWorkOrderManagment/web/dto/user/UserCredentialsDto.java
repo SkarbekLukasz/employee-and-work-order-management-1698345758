@@ -14,5 +14,6 @@ public record UserCredentialsDto(String firstName,
                                  String lastName,
                                  String email,
                                  Set<String> roles,
+                                 boolean enabled,
                                  String password) implements Serializable {
 }

@@ -34,6 +34,16 @@ public class User{
     @Column(nullable = false, length = 64)
     @NotNull @Size(max = 64, min = 8) @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}")
     private String password;
+    @Column(name = "enabled")
+    private boolean enabled = false;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Set<Role> getRoles() {
         return roles;

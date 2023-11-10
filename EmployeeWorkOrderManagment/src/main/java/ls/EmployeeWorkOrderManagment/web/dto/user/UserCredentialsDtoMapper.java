@@ -13,6 +13,7 @@ public class UserCredentialsDtoMapper {
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .password(user.getPassword())
+                .enabled(user.isEnabled())
                 .roles(
                         user.getRoles().stream()
                                 .map(Role::getRoleName)

@@ -20,9 +20,11 @@ public class SecurityConfiguration {
     private String rememberKey;
 
     private final UserDetailsService userDetailsService;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
-    public SecurityConfiguration(UserDetailsService userDetailsService) {
+    public SecurityConfiguration(UserDetailsService userDetailsService, CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
         this.userDetailsService = userDetailsService;
+        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
     }
 
     @Bean
@@ -34,6 +36,7 @@ public class SecurityConfiguration {
                         .anyRequest().permitAll())
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .failureHandler(customAuthenticationFailureHandler)
                         .permitAll())
                 .logout((logout) -> logout
                         .logoutUrl("/logout")
@@ -58,4 +61,5 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

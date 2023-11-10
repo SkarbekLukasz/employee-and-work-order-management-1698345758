@@ -16,7 +16,7 @@
   >
     <th:block th:replace="~{fragments/fragments::common-header}"></th:block>
     <div class="flex flex-col items-center w-max h-auto py-12 px-4">
-      <div class="text-red-600" th:if="${param.error}">
+      <div class="text-red-600" th:if="${param.error}" th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]}">
         Invalid username and password.
       </div>
       <div th:if="${param.logout}">You have been logged out.</div>
