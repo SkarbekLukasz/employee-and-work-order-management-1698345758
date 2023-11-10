@@ -69,7 +69,7 @@ public class AccessController {
             userService.confirmUserRegistration(token);
         } catch (InvalidTokenException | TokenExpiredException invalidTokenException) {
             model.addAttribute("message", invalidTokenException.getMessage());
-            return "redirect:/error";
+            return "/message";
         }
         return "/login";
     }
