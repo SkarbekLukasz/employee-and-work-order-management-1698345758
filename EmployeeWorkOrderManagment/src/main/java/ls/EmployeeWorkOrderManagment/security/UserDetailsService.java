@@ -18,16 +18,16 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return  userRepository.findByEmail(username).map(UserCredentialsDtoMapper::mapToDto)
+        return userRepository.findByEmail(username).map(UserCredentialsDtoMapper::mapToDto)
                 .map(this::createUserDetails)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email %s not found", username)));
-
     }
 
     private UserDetails createUserDetails(UserCredentialsDto userCredentialsDto) {
         return User.builder()
                 .username(userCredentialsDto.email())
                 .password(userCredentialsDto.password())
+                .disabled(!userCredentialsDto.enabled())
                 .roles(userCredentialsDto.roles().toArray(String[]::new))
                 .build();
     }
