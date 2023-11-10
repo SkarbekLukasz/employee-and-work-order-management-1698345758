@@ -56,6 +56,9 @@ public class AccessController {
                 return "register";
             } catch (NoSuchElementException element) {
                 model.addAttribute("message", element.getMessage());
+            } catch (RuntimeException exception) {
+                model.addAttribute("message", "Error sending activation email.");
+                return "message";
             }
             return "registrationCompletion";
         }
