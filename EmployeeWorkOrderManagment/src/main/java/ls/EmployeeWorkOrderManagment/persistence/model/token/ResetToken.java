@@ -12,13 +12,13 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "verification_tokens")
+@Table(name = "reset_tokens")
 @Getter
 @Setter
 @NoArgsConstructor
-public class VerificationToken implements Token {
+public class ResetToken implements Token{
 
-    private static final int EXPIRATION_TIME = 60 * 24;
+    private static final int EXPIRATION_TIME = 30;
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -30,18 +30,16 @@ public class VerificationToken implements Token {
     @Column(name = "expiry_date", nullable = false)
     private Date expiryDate;
 
-    public VerificationToken(String token) {
-        this.token = token;
+    public ResetToken(String token) {
         this.expiryDate = calculateExpiryDate(EXPIRATION_TIME);
+        this.token = token;
     }
 
     @Override
     public Date calculateExpiryDate(int expiryTimeInMinutes) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(new Timestamp(cal.getTime().getTime()));
-            cal.add(Calendar.MINUTE, expiryTimeInMinutes);
-            return new Date(cal.getTime().getTime());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Timestamp(cal.getTime().getTime()));
+        cal.add(Calendar.MINUTE, expiryTimeInMinutes);
+        return new Date(cal.getTime().getTime());
     }
-
-
 }
