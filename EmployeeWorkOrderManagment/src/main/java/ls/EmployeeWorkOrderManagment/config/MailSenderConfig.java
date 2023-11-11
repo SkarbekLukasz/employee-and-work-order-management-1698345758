@@ -1,8 +1,10 @@
 package ls.EmployeeWorkOrderManagment.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -11,26 +13,21 @@ import java.util.Properties;
 @Configuration
 public class MailSenderConfig {
 
-    @Value("${spring.mail.host}")
-    private String hostName;
+    final
+    Environment environment;
 
-    @Value("${spring.mail.port}")
-    private int mailPort;
-
-    @Value("${spring.mail.username}")
-    private String mailUsername;
-
-    @Value("${spring.mail.password}")
-    private String mailPassword;
+    public MailSenderConfig(Environment environment) {
+        this.environment = environment;
+    }
 
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost(hostName);
-        mailSender.setPort(mailPort);
+        mailSender.setHost(environment.getProperty("spring.mail.host"));
+        mailSender.setPort(587);
 
-        mailSender.setUsername(mailUsername);
-        mailSender.setPassword(mailPassword);
+        mailSender.setUsername(environment.getProperty("spring.mail.username"));
+        mailSender.setPassword(environment.getProperty("spring.mail.password"));
 
         Properties properties = mailSender.getJavaMailProperties();
         properties.put("mail.transport.protocol", "smtp");
