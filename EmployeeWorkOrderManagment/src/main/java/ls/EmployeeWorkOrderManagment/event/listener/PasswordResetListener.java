@@ -3,8 +3,10 @@ package ls.EmployeeWorkOrderManagment.event.listener;
 import ls.EmployeeWorkOrderManagment.event.OnPasswordResetEvent;
 import ls.EmployeeWorkOrderManagment.persistence.model.user.User;
 import ls.EmployeeWorkOrderManagment.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -13,15 +15,14 @@ import java.util.UUID;
 
 @Component
 public class PasswordResetListener implements ApplicationListener<OnPasswordResetEvent> {
-    @Value("${application.url}")
-    private String APP_URL;
-
+    private final Environment environment;
     private final JavaMailSender mailSender;
     private final UserService userService;
 
-    public PasswordResetListener(JavaMailSender mailSender, UserService userService) {
+    public PasswordResetListener(JavaMailSender mailSender, UserService userService, Environment environment) {
         this.mailSender = mailSender;
         this.userService = userService;
+        this.environment = environment;
     }
 
     @Override
@@ -39,7 +40,7 @@ public class PasswordResetListener implements ApplicationListener<OnPasswordRese
 
         String userEmailAddress = user.getEmail();
         String emailSubject = "Password reset!";
-        String confirmationUrl = APP_URL + event.getAppUrl() + "/resetPassword?token=" + token;
+        String confirmationUrl = environment.getProperty("application.url") + event.getAppUrl() + "/resetPassword?token=" + token;
         String emailMessage = "Click the link below to reset your account password:";
 
         SimpleMailMessage email = new SimpleMailMessage();
