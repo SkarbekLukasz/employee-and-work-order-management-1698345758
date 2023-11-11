@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link th:href="@{/main.css}" rel="stylesheet" />
+    <title>Message - EWOM</title>
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css"
+            rel="stylesheet"
+    />
+    <script src="/theme_enabler.js"></script>
+</head>
+<body
+        class="bg-slate-50 dark:bg-black dark:text-white flex flex-col min-h-screen"
+>
+<th:block th:replace="~{fragments/fragments::common-header}"></th:block>
+<div class="flex flex-col items-center w-max h-auto py-12 px-4">
+    <div>
+        <h3 class="text-3xl font-bold dark:text-white" th:text="${message}">
+            Text substitute
+        </h3>
+        <a
+                href="/"
+                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+        >Return to homepage</a
+        >
+        <span> or </span>
+        <a
+                href="/login"
+                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+        >Log in</a
+        >
+    </div>
+</div>
+
+<th:block
+        th:replace="~{fragments/fragments::common-footer-sticky}"
+></th:block>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
+</body>
+</html>

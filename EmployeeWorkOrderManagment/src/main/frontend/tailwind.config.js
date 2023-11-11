@@ -3,21 +3,45 @@ module.exports = {
     content: ["../resources/templates/**/*.html", "../resources/js/*.js"],
     theme: {
         extend: {
-            screens: {
-                'windscreen': {'raw': '(min-aspect-ratio: 3/2'},
-                'tailscreen': {'raw': '(min-aspect-ratio: 13/20'},
-            },
-            keyframes: {
-                'open-menu': {
-                    '0%': { transform: 'scaleY(0)'},
-                    '80%': { transform: 'scaleY(1.2)'},
-                    '100%': { transform: 'scaleY(1)'}
-                },
-            },
-            animation: {
-                'open-menu': 'open-menu 0.5 ease-in-out forwards',
+            colors: {
+                primary: {"50":"#eff6ff","100":"#dbeafe","200":"#bfdbfe","300":"#93c5fd","400":"#60a5fa","500":"#3b82f6","600":"#2563eb","700":"#1d4ed8","800":"#1e40af","900":"#1e3a8a","950":"#172554"}
             }
         },
-    },
-    plugins: [],
+        fontFamily: {
+            'body': [
+                'Inter',
+                'ui-sans-serif',
+                'system-ui',
+                '-apple-system',
+                'system-ui',
+                'Segoe UI',
+                'Roboto',
+                'Helvetica Neue',
+                'Arial',
+                'Noto Sans',
+                'sans-serif',
+                'Apple Color Emoji',
+                'Segoe UI Emoji',
+                'Segoe UI Symbol',
+                'Noto Color Emoji'
+            ],
+            'sans': [
+                'Inter',
+                'ui-sans-serif',
+                'system-ui',
+                '-apple-system',
+                'system-ui',
+                'Segoe UI',
+                'Roboto',
+                'Helvetica Neue',
+                'Arial',
+                'Noto Sans',
+                'sans-serif',
+                'Apple Color Emoji',
+                'Segoe UI Emoji',
+                'Segoe UI Symbol',
+                'Noto Color Emoji'
+            ]
+        }
+    }
 }
