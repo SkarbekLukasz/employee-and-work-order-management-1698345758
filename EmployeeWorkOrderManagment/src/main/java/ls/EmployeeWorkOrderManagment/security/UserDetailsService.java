@@ -2,7 +2,7 @@ package ls.EmployeeWorkOrderManagment.security;
 
 import ls.EmployeeWorkOrderManagment.persistence.dao.UserRepository;
 import ls.EmployeeWorkOrderManagment.web.dto.user.UserCredentialsDto;
-import ls.EmployeeWorkOrderManagment.web.dto.user.UserCredentialsDtoMapper;
+import ls.EmployeeWorkOrderManagment.web.dto.user.UserDtoMapper;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +18,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username).map(UserCredentialsDtoMapper::mapToDto)
+        return userRepository.findByEmail(username).map(UserDtoMapper::mapCredentialsToDto)
                 .map(this::createUserDetails)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email %s not found", username)));
     }
