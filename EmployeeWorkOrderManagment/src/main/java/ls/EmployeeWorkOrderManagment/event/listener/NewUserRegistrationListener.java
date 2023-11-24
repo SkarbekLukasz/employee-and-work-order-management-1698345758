@@ -3,7 +3,7 @@ package ls.EmployeeWorkOrderManagment.event.listener;
 import ls.EmployeeWorkOrderManagment.event.OnRegisterCompleteEvent;
 import ls.EmployeeWorkOrderManagment.mail.MailFactory;
 import ls.EmployeeWorkOrderManagment.persistence.model.user.User;
-import ls.EmployeeWorkOrderManagment.service.UserService;
+import ls.EmployeeWorkOrderManagment.service.TokenService;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
@@ -15,16 +15,16 @@ import java.util.UUID;
 @Component
 public class NewUserRegistrationListener implements ApplicationListener<OnRegisterCompleteEvent> {
     private final Environment environment;
-    private final UserService userService;
+    private final TokenService tokenService;
     private final JavaMailSender mailSender;
     private final MailFactory mailFactory;
     private final String EMAIL_SUBJECT = "New account registration confirmation!";
     private final String EMAIL_MESSAGE = "Your account has been created. Click the link below to confirm your registration.";
 
-    public NewUserRegistrationListener(UserService userService, JavaMailSender mailSender, Environment environment, MailFactory mailFactory) {
-        this.userService = userService;
+    public NewUserRegistrationListener(JavaMailSender mailSender, Environment environment, TokenService tokenService, MailFactory mailFactory) {
         this.mailSender = mailSender;
         this.environment = environment;
+        this.tokenService = tokenService;
         this.mailFactory = mailFactory;
     }
 
@@ -36,7 +36,7 @@ public class NewUserRegistrationListener implements ApplicationListener<OnRegist
     private void confirmRegistration(OnRegisterCompleteEvent event) {
         User user = event.getUser();
         String token = UUID.randomUUID().toString();
-        userService.createNewVerificationToken(user, token);
+        tokenService.createNewVerificationToken(user, token);
 
         String userEmailAddress = user.getEmail();
         String confirmationUrl = environment.getProperty("application.url") + event.getAppUrl() + "/registerConfirm?token=" + token;
