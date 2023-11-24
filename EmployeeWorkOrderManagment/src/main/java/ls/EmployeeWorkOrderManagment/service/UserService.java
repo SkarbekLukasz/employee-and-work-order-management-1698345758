@@ -7,8 +7,10 @@ import ls.EmployeeWorkOrderManagment.persistence.model.role.Role;
 import ls.EmployeeWorkOrderManagment.persistence.model.token.ResetToken;
 import ls.EmployeeWorkOrderManagment.persistence.model.token.VerificationToken;
 import ls.EmployeeWorkOrderManagment.persistence.model.user.User;
+import ls.EmployeeWorkOrderManagment.web.dto.user.UserDtoMapper;
 import ls.EmployeeWorkOrderManagment.web.dto.user.UserPasswordChangeDto;
 import ls.EmployeeWorkOrderManagment.web.dto.user.UserRegistrationDto;
+import ls.EmployeeWorkOrderManagment.web.dto.user.UserSiteRenderDto;
 import ls.EmployeeWorkOrderManagment.web.error.InvalidTokenException;
 import ls.EmployeeWorkOrderManagment.web.error.TokenExpiredException;
 import ls.EmployeeWorkOrderManagment.web.error.UserAlreadyExistsException;
@@ -16,8 +18,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -75,5 +80,18 @@ public class UserService {
         String newPassword = passwordEncoder.encode(userRegistrationDto.getPassword());
         user.setPassword(newPassword);
         userRepository.save(user);
+    }
+
+    public List<UserSiteRenderDto> getAllUsers() {
+        List<User> allUsers = userRepository.findAll();
+        return allUsers.stream()
+                .map(UserDtoMapper::mapSiteRenderToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteUserAccount(String id) {
+        UUID uuid = UUID.fromString(id);
+        userRepository.deleteById(uuid);
     }
 }
