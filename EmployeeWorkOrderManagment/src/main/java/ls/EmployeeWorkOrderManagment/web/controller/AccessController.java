@@ -116,7 +116,7 @@ public class AccessController {
             request.getSession().setAttribute("token", fetchedToken);
         } catch (InvalidTokenException | TokenExpiredException invalidTokenException) {
             model.addAttribute("message", invalidTokenException.getMessage());
-            return "/message";
+            return "message";
         }
         model.addAttribute("user", new UserRegistrationDto());
         model.addAttribute("message", "Password reset successful");
