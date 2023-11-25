@@ -32,6 +32,9 @@
           delete them with no effort!
         </p>
       </div>
+      <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400">
+        <p th:text="${edit}">TExt</p>
+      </div>
       <div
         class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700"
       >
@@ -138,9 +141,9 @@
                           </div>
                           <form
                             class="p-4 md:p-5"
-                            method="delete"
+                            method="post"
                             action="#"
-                            th:action="@{|/dashboard/users/|}"
+                            th:action="@{|/dashboard/users|}"
                           >
                             <div class="grid gap-4 mb-4 grid-cols-2">
                               <div class="col-span-2">
@@ -150,22 +153,27 @@
                                   >Roles</label
                                 >
 
-                                <div class="flex items-center mb-4">
+                                <div class="flex items-center mb-4" th:each="role: ${roles}">
                                   <input
                                     id="default-checkbox"
                                     type="checkbox"
                                     value=""
                                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                    th:value="${role.id()}"
+                                    th:id="|role-${role.id()}|"
+                                    th:name="role"
+                                    th:checked="${#lists.contains(user.roles(), role.roleName())}"
                                   />
                                   <label
                                     for="default-checkbox"
                                     class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 px-2"
+                                    th:text="${role.roleName()}"
+                                    th:for="|role-${role.id()}|"
                                     >Role 1</label
                                   >
                                 </div>
                                 <div class="col-span-2">
                                   <label
-                                    for="name"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                     >Account enabled</label
                                   >
@@ -176,6 +184,8 @@
                                       value=""
                                       name="radio-enabled"
                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                      th:value="true"
+                                      th:checked="${user.enabled()}"
                                     />
                                     <label
                                       for="radio-enabled"
@@ -191,12 +201,26 @@
                                       value=""
                                       name="radio-enabled"
                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                      th:value="false"
+                                      th:checked="${!user.enabled()}"
                                     />
                                     <label
-                                      for="default-radio-2"
+                                      for="radio-disabled"
                                       class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 px-2"
                                       >Disabled</label
                                     >
+                                  </div>
+                                  <div class="flex items-center" hidden>
+                                    <input
+                                            checked
+                                            id="user-id"
+                                            type="text"
+                                            value=""
+                                            name="userId"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                            th:value="${user.id()}"
+                                            hidden
+                                    />
                                   </div>
                                 </div>
                               </div>
@@ -274,7 +298,8 @@
                               <a href="#" th:href="@{/dashboard/users/delete(id=${user.id()})}"> Yes, I'm sure </a>
                             </button>
                             <button
-                              data-modal-hide="popup-modal"
+                              data-modal-hide="|delete-${user.id()}|"
+                              th:attr="data-modal-hide=|delete-${user.id()}|"
                               type="button"
                               class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
                             >

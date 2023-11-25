@@ -14,14 +14,12 @@ import ls.EmployeeWorkOrderManagment.web.dto.user.UserSiteRenderDto;
 import ls.EmployeeWorkOrderManagment.web.error.InvalidTokenException;
 import ls.EmployeeWorkOrderManagment.web.error.TokenExpiredException;
 import ls.EmployeeWorkOrderManagment.web.error.UserAlreadyExistsException;
+import ls.EmployeeWorkOrderManagment.web.error.UserNotFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -93,5 +91,25 @@ public class UserService {
     public void deleteUserAccount(String id) {
         UUID uuid = UUID.fromString(id);
         userRepository.deleteById(uuid);
+    }
+
+    @Transactional
+    public void editUserAccount(Set<UUID> rolesId, boolean enabled, UUID userId) throws UserNotFoundException{
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User account with this id was not found."));
+
+        user.cleanRoles();
+        Set<Role> roles = loadUserRoles(rolesId);
+        roles.forEach(user::addRoles);
+
+        user.setEnabled(enabled);
+        userRepository.save(user);
+    }
+
+    private Set<Role> loadUserRoles(Set<UUID> rolesId) {
+        return  rolesId.stream()
+                .map(roleRepository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toSet());
     }
 }
