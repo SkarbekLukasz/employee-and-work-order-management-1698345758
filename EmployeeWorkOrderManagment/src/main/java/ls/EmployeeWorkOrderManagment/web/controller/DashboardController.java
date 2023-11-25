@@ -33,7 +33,9 @@ public class DashboardController {
     }
 
     @GetMapping("/users")
-    public String getUserList(Model model, @ModelAttribute("edit") String editAttribute) {
+    public String getUserList(Model model,
+                              @ModelAttribute("edit") String editAttribute,
+                              @ModelAttribute("delete") String deleteAttribute) {
         List<UserSiteRenderDto> users = userService.getAllUsers();
         model.addAttribute("users", users);
         Set<RoleDto> roles = roleService.getAllRoles();
@@ -41,13 +43,17 @@ public class DashboardController {
         if(!editAttribute.isEmpty()) {
             model.addAttribute("edit", editAttribute);
         }
+        if(!deleteAttribute.isEmpty()) {
+            model.addAttribute("delete", deleteAttribute);
+        }
         return "userList";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users/delete")
-    public String deleteUserAccount(@RequestParam String id) {
+    public String deleteUserAccount(@RequestParam String id, RedirectAttributes redirectAttributes) {
         userService.deleteUserAccount(id);
+        redirectAttributes.addAttribute("delete", "User account successfully deleted!");
         return "redirect:/dashboard/users";
     }
 
