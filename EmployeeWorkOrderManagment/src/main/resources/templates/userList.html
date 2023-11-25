@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -54,7 +54,7 @@
                 <th scope="col" class="px-6 py-3">Last name</th>
                 <th scope="col" class="px-6 py-3">Roles</th>
                 <th scope="col" class="px-6 py-3">Enabled</th>
-                <th scope="col" class="px-6 py-3">Actions</th>
+                <th scope="col" class="px-6 py-3" sec:authorize="hasRole('ADMIN')">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -77,7 +77,7 @@
                   </td>
                   <td class="px-6 py-4" th:text="${user.roles()}">Roles</td>
                   <td class="px-6 py-4" th:text="${user.enabled()}">Yes</td>
-                  <td class="px-6 py-4 grid-row-1">
+                  <td class="px-6 py-4 grid-row-1" sec:authorize="hasRole('ADMIN')">
                     <button
                       th:attr="data-modal-target=|crud-${user.id()}|, data-modal-toggle=|crud-${user.id()}|"
                       data-modal-target="crud-modal"
