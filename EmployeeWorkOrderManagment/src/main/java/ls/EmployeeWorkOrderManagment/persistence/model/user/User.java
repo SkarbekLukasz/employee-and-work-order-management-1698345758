@@ -85,6 +85,10 @@ public class User{
         this.getRoles().add(role);
     }
 
+    public void cleanRoles() {
+        this.getRoles().clear();
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
