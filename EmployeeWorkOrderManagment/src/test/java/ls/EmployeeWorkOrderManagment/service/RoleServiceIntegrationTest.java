@@ -1,5 +1,6 @@
 package ls.EmployeeWorkOrderManagment.service;
 
+import ls.EmployeeWorkOrderManagment.EmployeeWorkOrderManagmentApplication;
 import ls.EmployeeWorkOrderManagment.persistence.dao.RoleRepository;
 import ls.EmployeeWorkOrderManagment.persistence.model.role.Role;
 import ls.EmployeeWorkOrderManagment.web.dto.role.RoleDto;
@@ -9,8 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Set;
@@ -18,7 +17,9 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
+@SpringBootTest(classes = {
+        EmployeeWorkOrderManagmentApplication.class
+})
 @Transactional
 @TestPropertySource(properties = {
         "spring.test.database.replace=none",
