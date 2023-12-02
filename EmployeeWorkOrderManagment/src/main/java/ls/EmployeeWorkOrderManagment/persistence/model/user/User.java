@@ -38,7 +38,7 @@ public class User{
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
     @Column(nullable = false, length = 64)
-    @NotNull @Size(max = 64, min = 8) @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}")
+    @NotNull @Size(max = 64, min = 8) @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", message = "Password must contain at least 1 lower case character, 1 upper case character and 1 digit or special character.")
     private String password;
     @Column(name = "enabled")
     private boolean enabled = false;
