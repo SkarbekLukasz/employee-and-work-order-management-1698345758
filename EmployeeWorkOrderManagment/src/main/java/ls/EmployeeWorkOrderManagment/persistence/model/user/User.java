@@ -2,12 +2,18 @@ package ls.EmployeeWorkOrderManagment.persistence.model.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import ls.EmployeeWorkOrderManagment.persistence.model.role.Role;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User{
