@@ -7,10 +7,7 @@ import ls.EmployeeWorkOrderManagment.persistence.model.role.Role;
 import ls.EmployeeWorkOrderManagment.persistence.model.token.ResetToken;
 import ls.EmployeeWorkOrderManagment.persistence.model.token.VerificationToken;
 import ls.EmployeeWorkOrderManagment.persistence.model.user.User;
-import ls.EmployeeWorkOrderManagment.web.dto.user.UserDtoMapper;
-import ls.EmployeeWorkOrderManagment.web.dto.user.UserPasswordChangeDto;
-import ls.EmployeeWorkOrderManagment.web.dto.user.UserRegistrationDto;
-import ls.EmployeeWorkOrderManagment.web.dto.user.UserSiteRenderDto;
+import ls.EmployeeWorkOrderManagment.web.dto.user.*;
 import ls.EmployeeWorkOrderManagment.web.error.InvalidTokenException;
 import ls.EmployeeWorkOrderManagment.web.error.TokenExpiredException;
 import ls.EmployeeWorkOrderManagment.web.error.UserAlreadyExistsException;
@@ -72,6 +69,11 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User with this email not found"));
     }
 
+    public UserSiteRenderDto getUserInfoByEmail(String email) throws UserNotFoundException {
+        User fetchedUser = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User account with these credentials doesn't exist."));
+        return UserDtoMapper.mapSiteRenderToDto(fetchedUser);
+    }
+
     @Transactional
     public void changeUserPassword(UserPasswordChangeDto userRegistrationDto, ResetToken token) {
         User user = token.getUser();
@@ -80,7 +82,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<UserSiteRenderDto> getAllUsers() {
+    public List<UserSiteRenderDto> getAllUsersInfo() {
         List<User> allUsers = userRepository.findAll();
         return allUsers.stream()
                 .map(UserDtoMapper::mapSiteRenderToDto)
