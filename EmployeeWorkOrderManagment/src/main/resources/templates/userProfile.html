@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link th:href="@{/main.css}" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <script src="/theme_enabler.js"></script>
+    <title>User profile - EWOM</title>
+  </head>
+  <body class="bg-slate-50 dark:bg-black dark:text-white">
+    <th:block th:replace="~{fragments/fragments::dashboard-button}"></th:block>
+
+    <th:block th:replace="~{fragments/fragments::dashboard-aside}"></th:block>
+
+    <div class="p-4 sm:ml-64">
+      <div
+        class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700"
+      >
+        <h1
+          class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+        >
+          Your user profile
+        </h1>
+        <p
+          class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400"spring mvc
+        >
+          Lookup and edit your account's profile data here
+        </p>
+      </div>
+      <div
+        class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700"
+      >
+        <div class="flex items-center justify-center mb-4">
+          <img class="rounded-full w-36 h-36" th:src="@{/img/sample_profile_pic.jpg}" alt="Profile image" />
+        </div>
+        <div class="text-center">
+          <h2
+            class="text-xl font-bold dark:text-white"
+            th:text="|${session.userData.firstName()} ${session.userData.lastName()}|"
+          >
+            Username
+          </h2>
+          <p
+            class="mb-3 text-lg text-gray-500 md:text-xl dark:text-gray-400"
+            th:text="${session.userData.roles()}"
+          >
+            Role
+          </p>
+        </div>
+        <div class="mt-4">
+          <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+            Account details:
+          </h2>
+          <ul
+            class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400"
+          >
+            <li>
+              <strong>Email: </strong
+              ><span th:text="${session.userData.email()}"></span>
+            </li>
+            <li>
+              <strong>First name: </strong>
+              <span th:text="${session.userData.firstName()}"></span>
+            </li>
+            <li>
+              <strong>Last name: </strong
+              ><span th:text="${session.userData.lastName()}"></span>
+            </li>
+            <li>
+              <strong>Password: </strong>
+
+              <a
+                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                href="#password-modal"
+                >Change password</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <th:block
+        th:replace="~{fragments/fragments::common-footer-sticky-dashboard}"
+      ></th:block>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
+  </body>
+</html>
