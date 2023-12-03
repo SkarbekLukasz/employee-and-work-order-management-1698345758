@@ -16,126 +16,130 @@
   >
     <th:block th:replace="~{fragments/fragments::common-header}"></th:block>
     <div
-      class="flex flex-col items-center w-max py-8 px-4 max-h-screen overflow-hidden"
+      class="bg-slate-50 dark:bg-black dark:text-white flex flex-col min-h-full items-center"
     >
-      <p class="text-red-500" th:if="${message}" th:text="${message}">
-        message
-      </p>
-      <form
-        class="w-80"
-        th:action="@{/register}"
-        method="post"
-        action="/register"
-        th:object="${user}"
+      <div
+        class="flex flex-col items-center w-max py-8 px-4 max-h-screen overflow-hidden"
       >
-        <div class="mb-6">
-          <label
-            for="first_name"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >First name</label
-          >
-          <input
-            type="text"
-            name="firstName"
-            id="first_name"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="John Smith"
-            required
-            th:field="*{firstName}"
-          />
-          <div
-            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-            role="alert"
-            th:errors="*{firstName}"
-          ></div>
-        </div>
-        <div class="mb-6">
-          <label
-            for="last_name"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Last name</label
-          >
-          <input
-            type="text"
-            name="lastName"
-            id="last_name"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            required
-            th:field="*{lastName}"
-          />
-          <div
-            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-            role="alert"
-            th:errors="*{lastName}"
-          ></div>
-        </div>
-        <div class="mb-6">
-          <label
-            for="email"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Email</label
-          >
-          <input
-            type="email"
-            name="email"
-            id="email"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            required
-            th:field="*{email}"
-          />
-          <div
-            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-            role="alert"
-            th:errors="*{email}"
-          ></div>
-        </div>
-        <div class="mb-6">
-          <label
-            for="password"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Password</label
-          >
-          <input
-            type="password"
-            name="password"
-            id="password"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            required
-            th:field="*{password}"
-          />
-          <div
-            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-            role="alert"
-            th:errors="*{password}"
-          ></div>
-        </div>
-        <div class="mb-6">
-          <label
-            for="password_confirm"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Confirm password</label
-          >
-          <input
-            type="password"
-            name="passwordConfirm"
-            id="password_confirm"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            required
-            th:field="*{passwordConfirm}"
-          />
-          <div
-                  class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                  role="alert"
-                  th:errors="${user}"
-          ></div>
-        </div>
-        <button
-          type="submit"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        <p class="text-red-500" th:if="${message}" th:text="${message}">
+          message
+        </p>
+        <form
+          class="w-80"
+          th:action="@{/register}"
+          method="post"
+          action="/register"
+          th:object="${user}"
         >
-          Submit
-        </button>
-      </form>
+          <div class="mb-6">
+            <label
+              for="first_name"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >First name</label
+            >
+            <input
+              type="text"
+              name="firstName"
+              id="first_name"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="John Smith"
+              required
+              th:field="*{firstName}"
+            />
+            <div
+              class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+              role="alert"
+              th:errors="*{firstName}"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <label
+              for="last_name"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Last name</label
+            >
+            <input
+              type="text"
+              name="lastName"
+              id="last_name"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required
+              th:field="*{lastName}"
+            />
+            <div
+              class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+              role="alert"
+              th:errors="*{lastName}"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <label
+              for="email"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Email</label
+            >
+            <input
+              type="email"
+              name="email"
+              id="email"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required
+              th:field="*{email}"
+            />
+            <div
+              class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+              role="alert"
+              th:errors="*{email}"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <label
+              for="password"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Password</label
+            >
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required
+              th:field="*{password}"
+            />
+            <div
+              class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+              role="alert"
+              th:errors="*{password}"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <label
+              for="password_confirm"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Confirm password</label
+            >
+            <input
+              type="password"
+              name="passwordConfirm"
+              id="password_confirm"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required
+              th:field="*{passwordConfirm}"
+            />
+            <div
+              class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+              role="alert"
+              th:errors="${user}"
+            ></div>
+          </div>
+          <button
+            type="submit"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
     </div>
 
     <th:block
