@@ -7,7 +7,10 @@ import ls.EmployeeWorkOrderManagment.persistence.model.role.Role;
 import ls.EmployeeWorkOrderManagment.persistence.model.token.ResetToken;
 import ls.EmployeeWorkOrderManagment.persistence.model.token.VerificationToken;
 import ls.EmployeeWorkOrderManagment.persistence.model.user.User;
-import ls.EmployeeWorkOrderManagment.web.dto.user.*;
+import ls.EmployeeWorkOrderManagment.web.dto.user.UserDtoMapper;
+import ls.EmployeeWorkOrderManagment.web.dto.user.UserPasswordChangeDto;
+import ls.EmployeeWorkOrderManagment.web.dto.user.UserRegistrationDto;
+import ls.EmployeeWorkOrderManagment.web.dto.user.UserSiteRenderDto;
 import ls.EmployeeWorkOrderManagment.web.error.InvalidTokenException;
 import ls.EmployeeWorkOrderManagment.web.error.TokenExpiredException;
 import ls.EmployeeWorkOrderManagment.web.error.UserAlreadyExistsException;
@@ -75,7 +78,7 @@ public class UserService {
     }
 
     @Transactional
-    public void changeUserPassword(UserPasswordChangeDto userRegistrationDto, ResetToken token) {
+    public void changeUserResetPassword(UserPasswordChangeDto userRegistrationDto, ResetToken token) {
         User user = token.getUser();
         String newPassword = passwordEncoder.encode(userRegistrationDto.getPassword());
         user.setPassword(newPassword);
@@ -113,5 +116,27 @@ public class UserService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toSet());
+    }
+
+    @Transactional
+    public void changeUserFirstName(String firstName, String userEmail) {
+        User user = retrieveUserByEmail(userEmail);
+        user.setFirstName(firstName);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void changeUserLastName(String lastName, String userEmail) {
+        User user = retrieveUserByEmail(userEmail);
+        user.setLastName(lastName);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void changeUserPassword(UserPasswordChangeDto userPasswordChange, String userEmail) {
+        User user = retrieveUserByEmail(userEmail);
+        String newPassword = passwordEncoder.encode(userPasswordChange.getPassword());
+        user.setPassword(newPassword);
+        userRepository.save(user);
     }
 }
