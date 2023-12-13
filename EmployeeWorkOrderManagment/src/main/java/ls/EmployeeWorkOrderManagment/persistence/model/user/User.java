@@ -42,7 +42,8 @@ public class User{
     private String password;
     @Column(name = "enabled")
     private boolean enabled = false;
-
+    @Column(name = "picture_url")
+    private String picUrl;
     public boolean isEnabled() {
         return enabled;
     }
@@ -99,4 +100,11 @@ public class User{
         this.password = password;
     }
 
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
 }

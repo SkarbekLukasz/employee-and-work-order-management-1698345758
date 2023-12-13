@@ -1,5 +1,7 @@
 package ls.EmployeeWorkOrderManagment.service;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import jakarta.transaction.Transactional;
 import ls.EmployeeWorkOrderManagment.persistence.dao.RoleRepository;
 import ls.EmployeeWorkOrderManagment.persistence.dao.UserRepository;
@@ -18,7 +20,9 @@ import ls.EmployeeWorkOrderManagment.web.error.UserNotFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,13 +31,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final Cloudinary cloudinary;
 
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
-                       RoleRepository roleRepository) {
+                       RoleRepository roleRepository, Cloudinary cloudinary) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.cloudinary = cloudinary;
     }
 
     @Transactional
@@ -137,6 +143,23 @@ public class UserService {
         User user = retrieveUserByEmail(userEmail);
         String newPassword = passwordEncoder.encode(userPasswordChange.getPassword());
         user.setPassword(newPassword);
+        userRepository.save(user);
+    }
+
+    @SuppressWarnings("rawtypes")
+    public void changeProfilePicture(MultipartFile profilePicture, UUID userId) throws IOException, UserNotFoundException {
+        Map params = ObjectUtils.asMap(
+                "use_filename", false,
+                "unique_filename", false,
+                "overwrite", true,
+                "public_id", userId.toString(),
+                "asset_folder", "EWOM"
+        );
+
+        byte[] picture = profilePicture.getInputStream().readAllBytes();
+        Map uploadResult = cloudinary.uploader().upload(picture, params);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with this id doesn't exist."));
+        user.setPicUrl((String) uploadResult.get("url"));
         userRepository.save(user);
     }
 }

@@ -17,6 +17,7 @@ public class UserDtoMapper {
                 .roles(user.getRoles().stream()
                         .map(Role::getRoleName)
                         .collect(Collectors.toSet()))
+                .picUrl(user.getPicUrl())
                 .build();
     }
 }
