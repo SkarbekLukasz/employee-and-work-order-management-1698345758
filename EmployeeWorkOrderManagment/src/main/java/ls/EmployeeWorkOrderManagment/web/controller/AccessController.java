@@ -133,7 +133,7 @@ public class AccessController {
             return "resetpassword";
         } else {
             ResetToken token = (ResetToken) request.getSession().getAttribute("token");
-            userService.changeUserPassword(userRegistrationDto, token);
+            userService.changeUserResetPassword(userRegistrationDto, token);
             model.addAttribute("message", "Password changed");
             return "message";
         }

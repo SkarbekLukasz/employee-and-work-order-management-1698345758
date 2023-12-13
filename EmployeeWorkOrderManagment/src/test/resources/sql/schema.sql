@@ -19,6 +19,7 @@ CREATE TABLE if not exists users
     email                   VARCHAR(45) NOT NULL,
     password                VARCHAR(64) NOT NULL,
     enabled                 BOOLEAN,
+    picture_url             varchar(255),
     CONSTRAINT pk_users PRIMARY KEY (id)
 );
 

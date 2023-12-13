@@ -38,7 +38,8 @@ public class TokenService {
         if(fetchedToken.isEmpty()) throw new InvalidTokenException("Provided token is invalid.");
 
         VerificationToken verificationToken = fetchedToken.get();
-        if(isTokenExpired(verificationToken)) throw new TokenExpiredException("Provided token has expired.");
+        long currentTime = Calendar.getInstance().getTime().getTime();
+        if(isTokenExpired(verificationToken, currentTime)) throw new TokenExpiredException("Provided token has expired.");
 
         return verificationToken;
     }
@@ -55,14 +56,14 @@ public class TokenService {
         if(fetchedToken.isEmpty()) throw new InvalidTokenException("Provided token is invalid");
 
         ResetToken resetToken = fetchedToken.get();
-        if(isTokenExpired(resetToken)) throw new TokenExpiredException("Provided token has expired.");
+        long currentTime = Calendar.getInstance().getTime().getTime();
+        if(isTokenExpired(resetToken, currentTime)) throw new TokenExpiredException("Provided token has expired.");
 
         return resetToken;
     }
 
-    private boolean isTokenExpired(Token token) {
-        Calendar cal = Calendar.getInstance();
-        return token.getExpiryDate().getTime() - cal.getTime().getTime() <= 0;
+    private boolean isTokenExpired(Token token, long currentTime) {
+        return token.getExpiryDate().getTime() - currentTime <= 0;
     }
 
 

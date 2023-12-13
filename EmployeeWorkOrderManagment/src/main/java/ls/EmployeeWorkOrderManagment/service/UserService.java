@@ -1,5 +1,7 @@
 package ls.EmployeeWorkOrderManagment.service;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import jakarta.transaction.Transactional;
 import ls.EmployeeWorkOrderManagment.persistence.dao.RoleRepository;
 import ls.EmployeeWorkOrderManagment.persistence.dao.UserRepository;
@@ -15,10 +17,13 @@ import ls.EmployeeWorkOrderManagment.web.error.InvalidTokenException;
 import ls.EmployeeWorkOrderManagment.web.error.TokenExpiredException;
 import ls.EmployeeWorkOrderManagment.web.error.UserAlreadyExistsException;
 import ls.EmployeeWorkOrderManagment.web.error.UserNotFoundException;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,12 +33,14 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
 
+    private final Environment environment;
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
-                       RoleRepository roleRepository) {
+                       RoleRepository roleRepository, Environment environment) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.environment = environment;
     }
 
     @Transactional
@@ -72,15 +79,20 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User with this email not found"));
     }
 
+    public UserSiteRenderDto getUserInfoByEmail(String email) throws UserNotFoundException {
+        User fetchedUser = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User account with these credentials doesn't exist."));
+        return UserDtoMapper.mapSiteRenderToDto(fetchedUser);
+    }
+
     @Transactional
-    public void changeUserPassword(UserPasswordChangeDto userRegistrationDto, ResetToken token) {
+    public void changeUserResetPassword(UserPasswordChangeDto userRegistrationDto, ResetToken token) {
         User user = token.getUser();
         String newPassword = passwordEncoder.encode(userRegistrationDto.getPassword());
         user.setPassword(newPassword);
         userRepository.save(user);
     }
 
-    public List<UserSiteRenderDto> getAllUsers() {
+    public List<UserSiteRenderDto> getAllUsersInfo() {
         List<User> allUsers = userRepository.findAll();
         return allUsers.stream()
                 .map(UserDtoMapper::mapSiteRenderToDto)
@@ -111,5 +123,51 @@ public class UserService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toSet());
+    }
+
+    @Transactional
+    public void changeUserFirstName(String firstName, String userEmail) {
+        User user = retrieveUserByEmail(userEmail);
+        user.setFirstName(firstName);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void changeUserLastName(String lastName, String userEmail) {
+        User user = retrieveUserByEmail(userEmail);
+        user.setLastName(lastName);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void changeUserPassword(UserPasswordChangeDto userPasswordChange, String userEmail) {
+        User user = retrieveUserByEmail(userEmail);
+        String newPassword = passwordEncoder.encode(userPasswordChange.getPassword());
+        user.setPassword(newPassword);
+        userRepository.save(user);
+    }
+
+    @SuppressWarnings("rawtypes")
+    public void changeProfilePicture(MultipartFile profilePicture, UUID userId) throws IOException, UserNotFoundException {
+        Map params = ObjectUtils.asMap(
+                "use_filename", false,
+                "unique_filename", false,
+                "overwrite", true,
+                "public_id", userId.toString(),
+                "asset_folder", "EWOM"
+        );
+
+        byte[] picture = profilePicture.getInputStream().readAllBytes();
+        Cloudinary cloudinaryBean = cloudinary();
+        Map uploadResult = cloudinaryBean.uploader().upload(picture, params);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with this id doesn't exist."));
+        user.setPicUrl((String) uploadResult.get("url"));
+        userRepository.save(user);
+    }
+
+    private Cloudinary cloudinary() {
+        Cloudinary cloudinary = new Cloudinary(environment.getProperty("cloudinary_url"));
+        cloudinary.config.secure = true;
+        return cloudinary;
     }
 }

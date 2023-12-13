@@ -42,7 +42,7 @@ public class SecurityConfiguration {
                         .logoutUrl("/logout")
                         .invalidateHttpSession(false)
                         .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl("/").permitAll())
+                        .logoutSuccessUrl("/login").permitAll())
                 .rememberMe(remember -> remember
                         .rememberMeParameter("remember-me")
                         .key(rememberKey));

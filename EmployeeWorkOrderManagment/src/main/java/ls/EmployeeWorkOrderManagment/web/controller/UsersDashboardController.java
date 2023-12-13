@@ -31,7 +31,7 @@ public class UsersDashboardController {
     public String getUserList(Model model,
                               @ModelAttribute("edit") String editAttribute,
                               @ModelAttribute("delete") String deleteAttribute) {
-        List<UserSiteRenderDto> users = userService.getAllUsers();
+        List<UserSiteRenderDto> users = userService.getAllUsersInfo();
         model.addAttribute("users", users);
         Set<RoleDto> roles = roleService.getAllRoles();
         model.addAttribute("roles", roles);
@@ -48,7 +48,7 @@ public class UsersDashboardController {
     @GetMapping("/delete")
     public String deleteUserAccount(@RequestParam String id, RedirectAttributes redirectAttributes) {
         userService.deleteUserAccount(id);
-        redirectAttributes.addAttribute("delete", "User account successfully deleted!");
+        redirectAttributes.addFlashAttribute("delete", "User account successfully deleted!");
         return "redirect:/dashboard/users";
     }
 
