@@ -39,12 +39,102 @@
       <div
         class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700"
       >
-        <div class="flex items-center justify-center mb-4">
+      <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert" th:if="${message}" th:text="${message}">
+        Change a few things up and try submitting again.
+      </div>
+        <div class="flex flex-col mb-4">
           <img
-            class="rounded-full w-36 h-36"
-            th:src="@{/img/sample_profile_pic.jpg}"
+            class="rounded-full w-36 h-36 place-self-center m-4"
+            th:src="${session.userData.picUrl()} ? @{${session.userData.picUrl()}} : @{/img/sample_profile_pic.jpg}"
             alt="Profile image"
           />
+          <button
+              th:attr="data-modal-target=|picture-${session.userData.id()}|, data-modal-toggle=|picture-${session.userData.id()}|"
+              data-modal-target="picture"
+              data-modal-toggle="picture"
+              class="block text-gray-900 hover:text-white border-none border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+              type="button"
+            >
+              Edit profile picture
+            </button>
+        </div>
+        <div
+        th:id="|picture-${session.userData.id()}|"
+        id="picture"
+        tabindex="-1"
+        aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+      >
+        <div class="relative p-4 w-full max-w-md max-h-full">
+          <!-- Modal content -->
+          <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div
+              class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
+            >
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                Edit profile picture
+              </h3>
+              <button
+                type="button"
+                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                data-modal-toggle="profile"
+                th:attr="data-modal-hide=|profile-${session.userData.id()}|, data-modal-toggle=|picture-${session.userData.id()}|"
+              >
+                <svg
+                  class="w-3 h-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 14 14"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                  />
+                </svg>
+                <span class="sr-only">Close modal</span>
+              </button>
+            </div>
+            <form
+              class="p-4 md:p-5"
+              method="post"
+              action="#"
+              th:action="@{|/dashboard/profile/picture|}"
+              enctype="multipart/form-data"
+            >
+              <div class="grid gap-4 mb-4 grid-cols-2">
+                <div class="col-span-2">
+                  <label
+                    for="picture_file"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Select your profile picture for upload:</label
+                  >
+                  <input
+                                      checked
+                                      id="user-id"
+                                      type="text"
+                                      value=""
+                                      name="userId"
+                                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                      th:value="${session.userData.id()}"
+                                      hidden
+                                    />
+                  <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="picture_file" name="picture_file" type="file">
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Save changes
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
         <div class="text-center">
           <h2
@@ -267,7 +357,7 @@
                   type="button"
                   class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                   data-modal-toggle="password"
-                  th:attr="data-modal-hide=|password-${session.userData.id()}|"
+                  th:attr="data-modal-hide=|password-${session.userData.id()}|, data-modal-toggle=|password-${session.userData.id()}|"
                 >
                   <svg
                     class="w-3 h-3"

@@ -11,5 +11,6 @@ public record UserSiteRenderDto(String firstName,
                                 String email,
                                 boolean enabled,
                                 Set<String> roles,
-                                UUID id) {
+                                UUID id,
+                                String picUrl) {
 }

@@ -52,7 +52,7 @@ public class TokenServiceIntegrationTest {
         UUID id = UUID.randomUUID();
         Set<Role> roles = new HashSet<>();
         roles.add(new Role(UUID.randomUUID(), "USER"));
-        commonUser = User.builder().id(id).email("test@test.com").lastName("last").firstName("first").roles(roles).password("$2a$12$j/hhBGn4q/n6Q9lyms8zmODeh9uxdh0aP60Mo2HPyclNW1JXjoCyq").enabled(true).build();
+        commonUser = User.builder().id(id).email("test@test.com").lastName("last").firstName("first").roles(roles).password("$2a$12$j/hhBGn4q/n6Q9lyms8zmODeh9uxdh0aP60Mo2HPyclNW1JXjoCyq").enabled(true).picUrl("").build();
         userRepository.save(commonUser);
     }
 
