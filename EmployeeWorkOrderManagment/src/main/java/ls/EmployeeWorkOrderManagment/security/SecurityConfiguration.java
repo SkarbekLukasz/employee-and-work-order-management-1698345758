@@ -33,6 +33,8 @@ public class SecurityConfiguration {
         http.sessionManagement((session) -> session.invalidSessionUrl("/invalid-session.html"));
         http.authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/dashboard").authenticated()
+                        .requestMatchers("/dashboard/profile").authenticated()
+                        .requestMatchers("/dashboard/users").hasAnyRole("ROLE_ADMIN", "ROLE_OPERATOR")
                         .anyRequest().permitAll())
                 .formLogin(form -> form
                         .loginPage("/login")
