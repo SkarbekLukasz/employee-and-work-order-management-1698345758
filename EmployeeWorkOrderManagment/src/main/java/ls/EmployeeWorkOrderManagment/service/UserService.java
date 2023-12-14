@@ -148,6 +148,7 @@ public class UserService {
     }
 
     @SuppressWarnings("rawtypes")
+    @Transactional
     public void changeProfilePicture(MultipartFile profilePicture, UUID userId) throws IOException, UserNotFoundException {
         Map params = ObjectUtils.asMap(
                 "use_filename", false,
