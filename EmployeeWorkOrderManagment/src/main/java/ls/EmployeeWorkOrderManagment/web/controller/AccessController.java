@@ -96,7 +96,7 @@ public class AccessController {
             model.addAttribute("message", invalidTokenException.getMessage());
             return "/message";
         }
-        return "/login";
+        return "redirect:/login";
     }
 
     @GetMapping("/forgottenPassword")
