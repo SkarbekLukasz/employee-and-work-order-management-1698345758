@@ -1,8 +1,8 @@
 package ls.EmployeeWorkOrderManagment.security;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -17,24 +17,24 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration {
-    @Value("${REMEMBER_ME")
-    private String rememberKey;
 
+    private final Environment environment;
     private final UserDetailsService userDetailsService;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
-    public SecurityConfiguration(UserDetailsService userDetailsService, CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
+    public SecurityConfiguration(Environment environment, UserDetailsService userDetailsService, CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
+        this.environment = environment;
         this.userDetailsService = userDetailsService;
         this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.sessionManagement((session) -> session.invalidSessionUrl("/invalid-session.html"));
+        http.sessionManagement((session) -> session.invalidSessionUrl("/invalid-session"));
         http.authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/dashboard").authenticated()
                         .requestMatchers("/dashboard/profile").authenticated()
-                        .requestMatchers("/dashboard/users").hasAnyRole("ROLE_ADMIN", "ROLE_OPERATOR")
+                        .requestMatchers("/dashboard/users").hasAnyRole("ADMIN", "OPERATOR")
                         .anyRequest().permitAll())
                 .formLogin(form -> form
                         .loginPage("/login")
@@ -42,12 +42,12 @@ public class SecurityConfiguration {
                         .permitAll())
                 .logout((logout) -> logout
                         .logoutUrl("/logout")
-                        .invalidateHttpSession(false)
                         .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl("/login").permitAll())
+                        .invalidateHttpSession(true)
+                        .logoutSuccessUrl("/logout-success").permitAll())
                 .rememberMe(remember -> remember
                         .rememberMeParameter("remember-me")
-                        .key(rememberKey));
+                        .key(environment.getProperty("remember_me")));
         return http.build();
     }
 
