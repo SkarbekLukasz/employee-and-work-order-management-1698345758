@@ -13,8 +13,6 @@ import ls.EmployeeWorkOrderManagment.web.dto.user.UserDtoMapper;
 import ls.EmployeeWorkOrderManagment.web.dto.user.UserPasswordChangeDto;
 import ls.EmployeeWorkOrderManagment.web.dto.user.UserRegistrationDto;
 import ls.EmployeeWorkOrderManagment.web.dto.user.UserSiteRenderDto;
-import ls.EmployeeWorkOrderManagment.web.error.InvalidTokenException;
-import ls.EmployeeWorkOrderManagment.web.error.TokenExpiredException;
 import ls.EmployeeWorkOrderManagment.web.error.UserAlreadyExistsException;
 import ls.EmployeeWorkOrderManagment.web.error.UserNotFoundException;
 import org.springframework.core.env.Environment;
@@ -69,7 +67,7 @@ public class UserService {
     }
 
     @Transactional
-    public void enableUserAccount(VerificationToken token) throws InvalidTokenException, TokenExpiredException {
+    public void enableUserAccount(VerificationToken token) {
         User registeredUser = token.getUser();
         registeredUser.setEnabled(true);
         userRepository.save(registeredUser);
@@ -85,7 +83,7 @@ public class UserService {
     }
 
     @Transactional
-    public void changeUserResetPassword(UserPasswordChangeDto userRegistrationDto, ResetToken token) {
+    public void resetUserPassword(UserPasswordChangeDto userRegistrationDto, ResetToken token) {
         User user = token.getUser();
         String newPassword = passwordEncoder.encode(userRegistrationDto.getPassword());
         user.setPassword(newPassword);
@@ -148,6 +146,7 @@ public class UserService {
     }
 
     @SuppressWarnings("rawtypes")
+    @Transactional
     public void changeProfilePicture(MultipartFile profilePicture, UUID userId) throws IOException, UserNotFoundException {
         Map params = ObjectUtils.asMap(
                 "use_filename", false,

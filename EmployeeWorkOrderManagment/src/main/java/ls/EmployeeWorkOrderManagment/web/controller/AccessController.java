@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.NoSuchElementException;
 @Controller
@@ -41,6 +42,17 @@ public class AccessController {
     @GetMapping("/login")
     public String getLoginPage() {
         return "login";
+    }
+
+    @GetMapping("logout-success")
+    public String getSuccessLogout(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("message", "You have been logged out successfully!");
+        return "redirect:/login";
+    }
+
+    @GetMapping("/invalid-session")
+    public String getInvalidSessionPage() {
+        return "invalid-session";
     }
 
     @GetMapping("/register")
@@ -133,7 +145,7 @@ public class AccessController {
             return "resetpassword";
         } else {
             ResetToken token = (ResetToken) request.getSession().getAttribute("token");
-            userService.changeUserResetPassword(userRegistrationDto, token);
+            userService.resetUserPassword(userRegistrationDto, token);
             model.addAttribute("message", "Password changed");
             return "message";
         }
