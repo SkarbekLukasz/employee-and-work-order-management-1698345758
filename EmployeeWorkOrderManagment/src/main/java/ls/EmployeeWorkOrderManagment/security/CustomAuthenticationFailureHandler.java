@@ -19,13 +19,19 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         setDefaultFailureUrl("/login?error=true");
 
         super.onAuthenticationFailure(request, response, exception);
-        String errorMessage = "Account is disabled";
+        String errorMessage;
 
         if (exception.getMessage().equalsIgnoreCase("User is disabled")) {
             errorMessage = "Account is disabled";
+            request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, errorMessage);
         } else if (exception.getMessage().equalsIgnoreCase("User account has expired")) {
             errorMessage = "Account has expired";
+            request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, errorMessage);
+        } else if (exception.getMessage().equalsIgnoreCase("Niepoprawne dane uwierzytelniające")) {
+            errorMessage = "Bad credentials!";
+            request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, errorMessage);
+        } else {
+            request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, exception.getMessage());
         }
-        request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, errorMessage);
     }
 }

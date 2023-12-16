@@ -4,7 +4,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import ls.EmployeeWorkOrderManagment.event.OnPasswordResetEvent;
 import ls.EmployeeWorkOrderManagment.event.OnRegisterCompleteEvent;
+import ls.EmployeeWorkOrderManagment.persistence.model.token.ResetToken;
+import ls.EmployeeWorkOrderManagment.persistence.model.token.VerificationToken;
 import ls.EmployeeWorkOrderManagment.persistence.model.user.User;
+import ls.EmployeeWorkOrderManagment.service.TokenService;
 import ls.EmployeeWorkOrderManagment.service.UserService;
 import ls.EmployeeWorkOrderManagment.web.dto.user.UserPasswordChangeDto;
 import ls.EmployeeWorkOrderManagment.web.dto.user.UserRegistrationDto;
@@ -21,21 +24,35 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.NoSuchElementException;
 @Controller
 public class AccessController {
     private final UserService userService;
+    private final TokenService tokenService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public AccessController(UserService userService, ApplicationEventPublisher applicationEventPublisher) {
+    public AccessController(UserService userService, TokenService tokenService, ApplicationEventPublisher applicationEventPublisher) {
         this.userService = userService;
+        this.tokenService = tokenService;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @GetMapping("/login")
     public String getLoginPage() {
         return "login";
+    }
+
+    @GetMapping("logout-success")
+    public String getSuccessLogout(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("message", "You have been logged out successfully!");
+        return "redirect:/login";
+    }
+
+    @GetMapping("/invalid-session")
+    public String getInvalidSessionPage() {
+        return "invalid-session";
     }
 
     @GetMapping("/register")
@@ -73,7 +90,8 @@ public class AccessController {
     public String confirmRegistration(@RequestParam(name = "token") String token,
                                       Model model) {
         try {
-            userService.confirmUserRegistration(token);
+            VerificationToken verifiedToken = tokenService.confirmUserRegistration(token);
+            userService.enableUserAccount(verifiedToken);
         } catch (InvalidTokenException | TokenExpiredException invalidTokenException) {
             model.addAttribute("message", invalidTokenException.getMessage());
             return "/message";
@@ -106,12 +124,12 @@ public class AccessController {
                                     Model model,
                                     HttpServletRequest request) {
         try{
-            userService.confirmResetToken(token);
+            ResetToken fetchedToken = tokenService.confirmResetToken(token);
+            request.getSession().setAttribute("token", fetchedToken);
         } catch (InvalidTokenException | TokenExpiredException invalidTokenException) {
             model.addAttribute("message", invalidTokenException.getMessage());
-            return "/message";
+            return "message";
         }
-        request.getSession().setAttribute("token", token);
         model.addAttribute("user", new UserRegistrationDto());
         model.addAttribute("message", "Password reset successful");
         return "resetpassword";
@@ -126,8 +144,8 @@ public class AccessController {
             System.out.println("errory");
             return "resetpassword";
         } else {
-            String token = (String) request.getSession().getAttribute("token");
-            userService.changeUserPassword(userRegistrationDto, token);
+            ResetToken token = (ResetToken) request.getSession().getAttribute("token");
+            userService.resetUserPassword(userRegistrationDto, token);
             model.addAttribute("message", "Password changed");
             return "message";
         }

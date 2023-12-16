@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link th:href="@{/main.css}" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <script src="/theme_enabler.js"></script>
+    <title>User profile - EWOM</title>
+  </head>
+  <body class="bg-slate-50 dark:bg-black dark:text-white">
+    <th:block th:replace="~{fragments/fragments::dashboard-button}"></th:block>
+
+    <th:block th:replace="~{fragments/fragments::dashboard-aside}"></th:block>
+
+    <th:block th:replace="~{fragments/fragments::logout-modal}"></th:block>
+
+    <div class="p-4 sm:ml-64">
+      <div
+        class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700"
+      >
+        <h1
+          class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+        >
+          Your user profile
+        </h1>
+        <p
+          class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400"
+          spring
+          mvc
+        >
+          Lookup and edit your account's profile data here
+        </p>
+      </div>
+      <div
+        class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700"
+      >
+      <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert" th:if="${message}" th:text="${message}">
+        Change a few things up and try submitting again.
+      </div>
+        <div class="flex flex-col mb-4">
+          <img
+            class="rounded-full w-36 h-36 place-self-center m-4"
+            th:src="${session.userData.picUrl()} ? @{${session.userData.picUrl()}} : @{/img/sample_profile_pic.jpg}"
+            alt="Profile image"
+          />
+          <button
+              th:attr="data-modal-target=|picture-${session.userData.id()}|, data-modal-toggle=|picture-${session.userData.id()}|"
+              data-modal-target="picture"
+              data-modal-toggle="picture"
+              class="block text-gray-900 hover:text-white border-none border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+              type="button"
+            >
+              Edit profile picture
+            </button>
+        </div>
+        <div
+        th:id="|picture-${session.userData.id()}|"
+        id="picture"
+        tabindex="-1"
+        aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+      >
+        <div class="relative p-4 w-full max-w-md max-h-full">
+          <!-- Modal content -->
+          <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div
+              class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
+            >
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                Edit profile picture
+              </h3>
+              <button
+                type="button"
+                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                data-modal-toggle="profile"
+                th:attr="data-modal-hide=|profile-${session.userData.id()}|, data-modal-toggle=|picture-${session.userData.id()}|"
+              >
+                <svg
+                  class="w-3 h-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 14 14"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                  />
+                </svg>
+                <span class="sr-only">Close modal</span>
+              </button>
+            </div>
+            <form
+              class="p-4 md:p-5"
+              method="post"
+              action="#"
+              th:action="@{|/dashboard/profile/picture|}"
+              enctype="multipart/form-data"
+            >
+              <div class="grid gap-4 mb-4 grid-cols-2">
+                <div class="col-span-2">
+                  <label
+                    for="picture_file"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Select your profile picture for upload:</label
+                  >
+                  <input
+                                      checked
+                                      id="user-id"
+                                      type="text"
+                                      value=""
+                                      name="userId"
+                                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                      th:value="${session.userData.id()}"
+                                      hidden
+                                    />
+                  <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="picture_file" name="picture_file" type="file">
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Save changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="text-center">
+          <h2
+            class="text-xl font-bold dark:text-white"
+            th:text="|${session.userData.firstName()} ${session.userData.lastName()}|"
+          >
+            Username
+          </h2>
+          <p
+            class="mb-3 text-lg text-gray-500 md:text-xl dark:text-gray-400"
+            th:text="${session.userData.roles()}"
+          >
+            Role
+          </p>
+        </div>
+        <div class="mt-4">
+          <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+            Account details:
+          </h2>
+          <ul
+            class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400"
+          >
+            <li>
+              <strong>Email: </strong
+              ><span th:text="${session.userData.email()}"></span>
+            </li>
+            <li>
+              <strong>First name: </strong>
+              <span th:text="${session.userData.firstName()}"></span>
+              <button
+              th:attr="data-modal-target=|first-${session.userData.id()}|, data-modal-toggle=|first-${session.userData.id()}|"
+              data-modal-target="first"
+              data-modal-toggle="first"
+              class="inline-block text-gray-900 hover:text-white border-none border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+              type="button"
+            >
+              Edit first name
+            </button>
+            </li>
+            <li>
+              <strong>Last name: </strong
+              ><span th:text="${session.userData.lastName()}"></span>
+              <button
+              th:attr="data-modal-target=|last-${session.userData.id()}|, data-modal-toggle=|last-${session.userData.id()}|"
+              data-modal-target="last"
+              data-modal-toggle="last"
+              class="inline-block text-gray-900 hover:text-white border-none border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+              type="button"
+            >
+              Edit last name
+            </button>
+            </li>
+            <li>
+              <strong>Password:</strong
+              >
+              <button
+              th:attr="data-modal-target=|password-${session.userData.id()}|, data-modal-toggle=|password-${session.userData.id()}|"
+              data-modal-target="password"
+              data-modal-toggle="password"
+              class="inline-block text-gray-900 hover:text-white border-none border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+              type="button"
+            >
+              Edit password
+            </button>
+            </li>
+          </ul>
+        </div>
+        <div
+          th:id="|first-${session.userData.id()}|"
+          id="first"
+          tabindex="-1"
+          aria-hidden="true"
+          class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        >
+          <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <!-- Modal header -->
+              <div
+                class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
+              >
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                  Edit first name
+                </h3>
+                <button
+                  type="button"
+                  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  data-modal-toggle="first"
+                  th:attr="data-modal-hide=|first-${session.userData.id()}|"
+                >
+                  <svg
+                    class="w-3 h-3"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 14 14"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                    />
+                  </svg>
+                  <span class="sr-only">Close modal</span>
+                </button>
+              </div>
+              <form
+                class="p-4 md:p-5"
+                method="post"
+                action="#"
+                th:action="@{|/dashboard/profile/firstName|}"
+              >
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                  <div class="col-span-2">
+                    <label
+                      for="first_name"
+                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >First name</label
+                    >
+                    <input name="firstName" type="text" id="first-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required>
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    Save changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div
+          th:id="|last-${session.userData.id()}|"
+          id="last"
+          tabindex="-1"
+          aria-hidden="true"
+          class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        >
+          <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <!-- Modal header -->
+              <div
+                class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
+              >
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                  Edit last name
+                </h3>
+                <button
+                  type="button"
+                  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  data-modal-toggle="last"
+                  th:attr="data-modal-hide=|last-${session.userData.id()}|"
+                >
+                  <svg
+                    class="w-3 h-3"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 14 14"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                    />
+                  </svg>
+                  <span class="sr-only">Close modal</span>
+                </button>
+              </div>
+              <form
+                class="p-4 md:p-5"
+                method="post"
+                action="#"
+                th:action="@{|/dashboard/profile/lastName|}"
+              >
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                  <div class="col-span-2">
+                    <label
+                      for="last_name"
+                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >Last name</label
+                    >
+                    <input name="lastName" type="text" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Smith" required>
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    Save changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div
+          th:id="|password-${session.userData.id()}|"
+          id="password"
+          tabindex="-1"
+          aria-hidden="true"
+          class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        >
+          <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <!-- Modal header -->
+              <div
+                class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
+              >
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                  Edit password
+                </h3>
+                <button
+                  type="button"
+                  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  data-modal-toggle="password"
+                  th:attr="data-modal-hide=|password-${session.userData.id()}|, data-modal-toggle=|password-${session.userData.id()}|"
+                >
+                  <svg
+                    class="w-3 h-3"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 14 14"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                    />
+                  </svg>
+                  <span class="sr-only">Close modal</span>
+                </button>
+              </div>
+              <form
+                class="p-4 md:p-5"
+                method="post"
+                action="#"
+                th:action="@{|/dashboard/profile/password|}"
+                th:object="${passwordChange}"
+              >
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                  <div class="col-span-2">
+                    <label
+                      for="last_name"
+                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >Password</label
+                    >
+                    <input th:field="*{password}" name="password" type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="********" required>
+                    </div>
+                    <div class="col-span-2">
+                      <label
+                        for="password_confirm"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >Confirm password</label
+                      >
+                      <input th:field="*{passwordConfirm}" name="passwordConfirm" type="password" id="password_confirm" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="********" required>
+                      </div>
+                      
+                  </div> 
+                  <div
+              class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+              role="alert"
+              th:errors="*{password}"
+            ></div>
+                  <button
+                    type="submit"
+                    class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    Save changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <th:block
+        th:replace="~{fragments/fragments::common-footer-sticky-dashboard}"
+      ></th:block>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
+  </body>
+</html>
