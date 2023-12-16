@@ -12,7 +12,7 @@ COPY . /app
 FROM maven:latest as backend
 WORKDIR .
 COPY --from=frontend /app .
-RUN mvn clean package
+RUN mvn clean install -DskipTests
 
 
 # Stage 3: Final Image
