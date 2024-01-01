@@ -44,7 +44,7 @@ public class AccessController {
         return "login";
     }
 
-    @GetMapping("logout-success")
+    @GetMapping("/logout-success")
     public String getSuccessLogout(RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("message", "You have been logged out successfully!");
         return "redirect:/login";
@@ -77,6 +77,7 @@ public class AccessController {
                 return "register";
             } catch (NoSuchElementException element) {
                 model.addAttribute("message", element.getMessage());
+                return "message";
             } catch (RuntimeException exception) {
                 model.addAttribute("message", "Error sending activation email.");
                 return "message";
@@ -94,7 +95,7 @@ public class AccessController {
             userService.enableUserAccount(verifiedToken);
         } catch (InvalidTokenException | TokenExpiredException invalidTokenException) {
             model.addAttribute("message", invalidTokenException.getMessage());
-            return "/message";
+            return "message";
         }
         return "redirect:/login";
     }
@@ -141,7 +142,6 @@ public class AccessController {
                                 Model model,
                                 HttpServletRequest request) {
         if(bindingResult.hasErrors()) {
-            System.out.println("errory");
             return "resetpassword";
         } else {
             ResetToken token = (ResetToken) request.getSession().getAttribute("token");
