@@ -15,22 +15,26 @@
     class="bg-slate-50 dark:bg-black dark:text-white flex flex-col min-h-screen"
   >
     <th:block th:replace="~{fragments/fragments::common-header}"></th:block>
-    <div class="flex flex-col items-center w-max h-auto py-12 px-4">
-      <div>
-        <h3 class="text-3xl font-bold dark:text-white">
-          Registration completed successfully
-        </h3>
-        <a
-          href="/"
-          class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          >Return to homepage</a
-        >
-        <span> or </span>
-        <a
-          href="/login"
-          class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          >Log in</a
-        >
+    <div
+      class="bg-slate-50 dark:bg-black dark:text-white flex flex-col min-h-screen items-center"
+    >
+      <div class="flex flex-col items-center w-max h-auto py-12 px-4">
+        <div>
+          <h3 class="text-3xl font-bold dark:text-white">
+            Registration completed successfully
+          </h3>
+          <a
+            href="/"
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            >Return to homepage</a
+          >
+          <span> or </span>
+          <a
+            href="/login"
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            >Log in</a
+          >
+        </div>
       </div>
     </div>
 
