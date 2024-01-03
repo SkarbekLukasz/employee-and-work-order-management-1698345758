@@ -28,7 +28,10 @@
         >
           Invalid username and password.
         </div>
-        <h4 class="text-3xl font-bold dark:text-white mb-4" th:text="${message}">
+        <h4
+          class="text-3xl font-bold dark:text-white mb-4"
+          th:text="${message}"
+        >
           Text substitute
         </h4>
         <form class="w-80" th:action="@{/login}" method="post">
@@ -92,9 +95,7 @@
       </div>
     </div>
 
-    <th:block
-      th:replace="~{fragments/fragments::common-footer-sticky}"
-    ></th:block>
+    <th:block th:replace="~{fragments/fragments::common-footer}"></th:block>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
   </body>
 </html>
