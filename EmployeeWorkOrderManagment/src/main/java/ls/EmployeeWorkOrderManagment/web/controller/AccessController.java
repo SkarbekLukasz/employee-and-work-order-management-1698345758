@@ -14,6 +14,8 @@ import ls.EmployeeWorkOrderManagment.web.dto.user.UserRegistrationDto;
 import ls.EmployeeWorkOrderManagment.web.error.InvalidTokenException;
 import ls.EmployeeWorkOrderManagment.web.error.TokenExpiredException;
 import ls.EmployeeWorkOrderManagment.web.error.UserAlreadyExistsException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -27,8 +29,11 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.NoSuchElementException;
+
 @Controller
 public class AccessController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AccessController.class);
     private final UserService userService;
     private final TokenService tokenService;
     private final ApplicationEventPublisher applicationEventPublisher;
@@ -67,18 +72,23 @@ public class AccessController {
                                Model model,
                                HttpServletRequest request) {
         if(bindingResult.hasErrors()) {
+            logger.warn("User registration failed due to form validation errors.");
             return "register";
         } else {
             try{
                 User savedUser = userService.saveNewUserAccount(user);
                 applicationEventPublisher.publishEvent(new OnRegisterCompleteEvent(savedUser, request.getContextPath()));
+                logger.info("User registered successfully: {}", savedUser.getEmail());
             } catch (UserAlreadyExistsException exists) {
+                logger.error("User registration failed - User already exists {}", user.getEmail(), exists);
                 model.addAttribute("message", exists.getMessage());
                 return "register";
             } catch (NoSuchElementException element) {
+                logger.error("User registration failed - no adequate roles exist.", element);
                 model.addAttribute("message", element.getMessage());
                 return "message";
             } catch (RuntimeException exception) {
+                logger.error("User registration failed - activation email couldn't be sent: {}", user.getEmail(), exception);
                 model.addAttribute("message", "Error sending activation email.");
                 return "message";
             }
@@ -93,7 +103,9 @@ public class AccessController {
         try {
             VerificationToken verifiedToken = tokenService.confirmUserRegistration(token);
             userService.enableUserAccount(verifiedToken);
+            logger.info("User account enabled successfully with token: {} for user: {}", verifiedToken.getId(), verifiedToken.getUser().getEmail());
         } catch (InvalidTokenException | TokenExpiredException invalidTokenException) {
+            logger.error("User account activation failed, provided token was invalid: {}", token);
             model.addAttribute("message", invalidTokenException.getMessage());
             return "message";
         }
@@ -112,7 +124,9 @@ public class AccessController {
         try{
             User userAccount = userService.retrieveUserByEmail(email);
             applicationEventPublisher.publishEvent(new OnPasswordResetEvent(userAccount, email, request.getContextPath()));
+            logger.info("Password reset link has been sent to user: {}", userAccount.getEmail());
         } catch (UsernameNotFoundException usernameNotFoundException) {
+            logger.error("Resetting password failed due to account not found: {}", email);
             model.addAttribute("message", usernameNotFoundException.getMessage());
             return "message";
         }
@@ -127,12 +141,15 @@ public class AccessController {
         try{
             ResetToken fetchedToken = tokenService.confirmResetToken(token);
             request.getSession().setAttribute("token", fetchedToken);
+            logger.info("Reset token id has been confirmed successfully: {}", fetchedToken.getId());
         } catch (InvalidTokenException | TokenExpiredException invalidTokenException) {
+            logger.error("Token confirmation failed - provided token was invalid: {}", token);
             model.addAttribute("message", invalidTokenException.getMessage());
             return "message";
         }
         model.addAttribute("user", new UserRegistrationDto());
         model.addAttribute("message", "Password reset successful");
+        logger.info("Password change form has been generated successfully");
         return "resetpassword";
     }
 
@@ -142,10 +159,12 @@ public class AccessController {
                                 Model model,
                                 HttpServletRequest request) {
         if(bindingResult.hasErrors()) {
+            logger.warn("Password change failed due to errors in provided form: {}", bindingResult);
             return "resetpassword";
         } else {
             ResetToken token = (ResetToken) request.getSession().getAttribute("token");
             userService.resetUserPassword(userRegistrationDto, token);
+            logger.info("Password has been changed successfully for user: {}", token.getUser().getEmail());
             model.addAttribute("message", "Password changed");
             return "message";
         }
