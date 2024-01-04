@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link th:href="@{/main.css}" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <script src="/theme_enabler.js"></script>
+    <title>Task creation - EWOM</title>
+  </head>
+  <body class="bg-slate-50 dark:bg-black dark:text-white">
+    <th:block th:replace="~{fragments/fragments::dashboard-button}"></th:block>
+
+    <th:block th:replace="~{fragments/fragments::dashboard-aside}"></th:block>
+
+    <th:block th:replace="~{fragments/fragments::logout-modal}"></th:block>
+
+    <div class="p-4 sm:ml-64 min-h-screen">
+      <div
+        class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700"
+      >
+        <h1
+          class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+        >
+          Task creation panel
+        </h1>
+        <p
+          class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400"
+        >
+          Here you can create and assign new tasks for designers to work on!
+        </p>
+      </div>
+      <div
+        class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 h-auto"
+      >
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <section class="bg-white dark:bg-gray-900">
+            <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+              <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+                Add a new task
+              </h2>
+              <form action="#" th:object="${task}">
+                <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                  <div class="sm:col-span-2">
+                    <label
+                      for="project-name"
+                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >Project name</label
+                    >
+                    <input
+                      type="text"
+                      name="project-name"
+                      id="project-name"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      placeholder="Type project name"
+                      required
+                      th:field="*{projectName}"
+                    />
+                  </div>
+                  <div class="w-full">
+                    <label
+                      for="designer"
+                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >Designer</label
+                    >
+                    <select
+                      name="designer"
+                      id="designer"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      required
+                      th:field="*{designerId}"
+                    >
+                      <option selected>Assign designer:</option>
+                      <th:block th:each="designer : ${designers}">
+                        <option
+                          th:text="|${designer.firstName()} ${designer.lastName}|"
+                          th:value="${designer.id()}"
+                          value="!!"
+                        >
+                          Designer
+                        </option>
+                      </th:block>
+                    </select>
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label
+                      for="description"
+                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >Task description</label
+                    >
+                    <textarea
+                      id="description"
+                      rows="8"
+                      class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      placeholder="Your description here"
+                      th:field="*{description}"
+                    ></textarea>
+                  </div>
+                  <div class="w-full">
+                    <label
+                      for="code"
+                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >Task code</label
+                    >
+                    <textarea
+                      name="code"
+                      id="code"
+                      rows="8"
+                      class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      placeholder="Insert your task code here..."
+                      th:field="*{taskCode}"
+                    ></textarea>
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  class="m-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Save task
+                </button>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <th:block
+      th:replace="~{fragments/fragments::common-footer-sticky-dashboard}"
+    ></th:block>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
+  </body>
+</html>
