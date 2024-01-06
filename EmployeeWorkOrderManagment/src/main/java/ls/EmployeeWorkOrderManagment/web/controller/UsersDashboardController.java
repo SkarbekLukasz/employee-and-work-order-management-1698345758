@@ -72,7 +72,7 @@ public class UsersDashboardController {
             model.addAttribute("message", exception.getMessage());
             return "message";
         }
-        redirectAttributes.addAttribute("edit", "Success! User account edited successfully!");
+        redirectAttributes.addFlashAttribute("edit", "Success! User account edited successfully!");
         logger.info("Successfully edited account for user: {}", userId.toString());
         return "redirect:/dashboard/users";
     }

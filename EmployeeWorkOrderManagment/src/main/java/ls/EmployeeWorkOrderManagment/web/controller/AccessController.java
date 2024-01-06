@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.NoSuchElementException;
@@ -120,7 +119,7 @@ public class AccessController {
     @PostMapping("/forgottenPassword")
     public String forgottenPasswordReset(@RequestParam(name = "email") String email,
                                          Model model,
-                                         ServletWebRequest request) {
+                                         HttpServletRequest request) {
         try{
             User userAccount = userService.retrieveUserByEmail(email);
             applicationEventPublisher.publishEvent(new OnPasswordResetEvent(userAccount, email, request.getContextPath()));
