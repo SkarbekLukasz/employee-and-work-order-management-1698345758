@@ -40,12 +40,18 @@
         class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 h-auto"
       >
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <div
+                  class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+                  role="alert"
+                  th:if="${!message.isEmpty()}"
+                  th:text="${message}"
+          ></div>
           <section class="bg-white dark:bg-gray-900">
             <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
               <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 Add a new task
               </h2>
-              <form action="#" th:object="${task}">
+              <form th:action="@{/dashboard/task}" th:method="post" action="/dashboard/task/" method="post" th:object="${task}">
                 <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                   <div class="sm:col-span-2">
                     <label
@@ -62,6 +68,11 @@
                       required
                       th:field="*{projectName}"
                     />
+                    <div
+                            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                            role="alert"
+                            th:errors="*{projectName}"
+                    ></div>
                   </div>
                   <div class="w-full">
                     <label
@@ -74,19 +85,22 @@
                       id="designer"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       required
-                      th:field="*{designerId}"
+                      th:field="*{assignedDesignerId}"
                     >
-                      <option selected>Assign designer:</option>
-                      <th:block th:each="designer : ${designers}">
-                        <option
-                          th:text="|${designer.firstName()} ${designer.lastName}|"
-                          th:value="${designer.id()}"
-                          value="!!"
+                      <option value="0" selected>Assign designer:</option>
+                        <option th:each="designer : ${designers}"
+                          th:text="|${designer.firstName} ${designer.lastName}|"
+                          th:value="${designer.id}"
+                          value="1"
                         >
                           Designer
                         </option>
-                      </th:block>
                     </select>
+                    <div
+                            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                            role="alert"
+                            th:errors="*{assignedDesignerId}"
+                    ></div>
                   </div>
                   <div class="sm:col-span-2">
                     <label
@@ -101,6 +115,11 @@
                       placeholder="Your description here"
                       th:field="*{description}"
                     ></textarea>
+                    <div
+                            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                            role="alert"
+                            th:errors="*{description}"
+                    ></div>
                   </div>
                   <div class="w-full">
                     <label
@@ -116,6 +135,11 @@
                       placeholder="Insert your task code here..."
                       th:field="*{taskCode}"
                     ></textarea>
+                    <div
+                            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                            role="alert"
+                            th:errors="*{taskCode}"
+                    ></div>
                   </div>
                 </div>
                 <button

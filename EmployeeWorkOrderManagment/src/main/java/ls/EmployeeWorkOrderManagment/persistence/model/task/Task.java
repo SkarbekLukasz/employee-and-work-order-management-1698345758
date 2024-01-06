@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import ls.EmployeeWorkOrderManagment.persistence.model.user.User;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -24,25 +25,34 @@ public class Task {
     @Column(name = "project_name", nullable = false)
     private String projectName;
 
-    @Lob
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Lob
     @Column(name = "task_code", nullable = true)
     private String taskCode;
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User creator;
 
-    @Column(name = "task_number", nullable = false, unique = true)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "assigned_designer_id", nullable = false)
+    private User assignedDesigner;
+
+    @Column(name = "task_number", unique = true, insertable = false)
     private Long taskNumber;
 
     @Enumerated
-    @Column(name = "task_status", nullable = false)
+    @Column(name = "task_status")
     private TaskStatus taskStatus = TaskStatus.OPEN;
+
+    public User getAssignedDesigner() {
+        return assignedDesigner;
+    }
+
+    public void setAssignedDesigner(User assignedDesigner) {
+        this.assignedDesigner = assignedDesigner;
+    }
 
     public TaskStatus getTaskStatus() {
         return taskStatus;
@@ -60,12 +70,12 @@ public class Task {
         this.taskNumber = taskNumber;
     }
 
-    public User getUser() {
-        return user;
+    public User getCreator() {
+        return creator;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 
     public String getTaskCode() {
@@ -101,11 +111,19 @@ public class Task {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
         Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(projectName, task.projectName) && Objects.equals(description, task.description) && Objects.equals(taskCode, task.taskCode) && Objects.equals(user, task.user) && Objects.equals(taskNumber, task.taskNumber);
+        return getId() != null && Objects.equals(getId(), task.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 
     @Override
@@ -113,11 +131,7 @@ public class Task {
         return getClass().getSimpleName() + "(" +
                 "projectName = " + projectName + ", " +
                 "description = " + description + ", " +
-                "taskNumber = " + taskNumber + ")";
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, projectName, description, taskCode, user, taskNumber);
+                "taskNumber = " + taskNumber + ", " +
+                "taskStatus = " + taskStatus + ")";
     }
 }

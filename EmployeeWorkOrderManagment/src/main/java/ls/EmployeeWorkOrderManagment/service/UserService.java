@@ -97,6 +97,12 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public List<UserSiteRenderDto> getAllUserByRole(String roleName) {
+        return userRepository.findByRoles_RoleNameLikeIgnoreCase(roleName).stream()
+                .map(UserDtoMapper::mapSiteRenderToDto)
+                .toList();
+    }
+
     @Transactional
     public void deleteUserAccount(String id) {
         UUID uuid = UUID.fromString(id);
