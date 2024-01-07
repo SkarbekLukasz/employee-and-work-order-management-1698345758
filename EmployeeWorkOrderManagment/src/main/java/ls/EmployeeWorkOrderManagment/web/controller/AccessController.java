@@ -45,7 +45,7 @@ public class AccessController {
 
     @GetMapping("/login")
     public String getLoginPage() {
-        return "login";
+        return "loginPage";
     }
 
     @GetMapping("/logout-success")
