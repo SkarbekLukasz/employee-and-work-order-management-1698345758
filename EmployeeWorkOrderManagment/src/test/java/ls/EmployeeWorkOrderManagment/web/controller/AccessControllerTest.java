@@ -203,9 +203,12 @@ public class AccessControllerTest {
     void shouldRedirectToLoginPageWhenRegistrationIsConfirmed() throws Exception {
         //given
         String token = UUID.randomUUID().toString();
-
+        VerificationToken verificationToken = new VerificationToken(token);
+        User user = User.builder()
+                .email("test@test.com").build();
+        verificationToken.setUser(user);
         //when
-        when(tokenService.confirmUserRegistration(token)).thenReturn(new VerificationToken());
+        when(tokenService.confirmUserRegistration(token)).thenReturn(verificationToken);
 
         this.mockMvc
                 .perform(get("/registerConfirm").param("token", token))
@@ -321,6 +324,9 @@ public class AccessControllerTest {
                 .passwordConfirm("Testowanko123!")
                 .build();
         ResetToken resetToken = new ResetToken();
+        User user = User.builder()
+                .email("test@test.com").build();
+        resetToken.setUser(user);
 
         this.mockMvc
                 .perform(post("/resetPassword").with(csrf()).sessionAttr("token", resetToken).flashAttr("user", userPasswordChangeDto))

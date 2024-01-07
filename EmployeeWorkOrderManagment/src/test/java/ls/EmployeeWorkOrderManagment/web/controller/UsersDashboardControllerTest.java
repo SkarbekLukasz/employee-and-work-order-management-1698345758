@@ -70,6 +70,6 @@ public class UsersDashboardControllerTest {
         this.mockMvc
                 .perform(post("/dashboard/users").with(csrf()).param("role", roles).param("radio-enabled", enabled).param("userId", id))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(model().attribute("edit", "Success! User account edited successfully!"));
+                .andExpect(flash().attribute("edit", "Success! User account edited successfully!"));
     }
 }
