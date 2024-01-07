@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SpringBootTest(classes = {
         EmployeeWorkOrderManagmentApplication.class
@@ -307,5 +308,24 @@ public class UserServiceIntegrationTest {
 
         //then
         Assertions.assertTrue(passwordEncoder.matches(userPasswordChangeDto.getPassword(), userRepository.findById(commonUser.getId()).get().getPassword()));
+    }
+
+    @Test
+    @Sql("classpath:/sql/schema.sql")
+    void shouldReturnListOfUsersWithDesignerRoleOnly() {
+        //given
+        UUID designerId = UUID.randomUUID();
+        Set<Role> roles = new HashSet<>();
+        roles.add(new Role(UUID.randomUUID(), "DESIGNER"));
+        User designerUser = User.builder().id(designerId).email("test2@test.com").lastName("last").firstName("first").roles(roles).password("$2a$12$j/hhBGn4q/n6Q9lyms8zmODeh9uxdh0aP60Mo2HPyclNW1JXjoCyq").enabled(true).picUrl("").build();
+        userRepository.save(designerUser);
+
+        //when
+        List<UserSiteRenderDto> list = userService.getAllUserByRole("DESIGNER");
+
+        //then
+        Assertions.assertEquals(1, list.size());
+        Assertions.assertEquals(1, list.get(0).roles().size());
+        Assertions.assertEquals(roles.stream().map(Role::getRoleName).collect(Collectors.toSet()) , list.get(0).roles());
     }
 }
