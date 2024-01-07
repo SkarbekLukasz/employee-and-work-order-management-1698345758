@@ -2,6 +2,7 @@ package ls.EmployeeWorkOrderManagment.web.controller;
 
 import ls.EmployeeWorkOrderManagment.service.UserService;
 import ls.EmployeeWorkOrderManagment.web.dto.user.UserPasswordChangeDto;
+import ls.EmployeeWorkOrderManagment.web.dto.user.UserSiteRenderDto;
 import ls.EmployeeWorkOrderManagment.web.error.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,15 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.io.IOException;
+import java.security.Principal;
+import java.util.HashSet;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserProfileController.class)
 public class UserProfileControllerTest {
@@ -64,6 +68,30 @@ public class UserProfileControllerTest {
 
     @Test
     @WithMockUser
+    void shouldReturnToProfileAfterReceivingInvalidPostRequestWithPasswordChange() throws Exception{
+
+        UserPasswordChangeDto userPasswordChangeDto = UserPasswordChangeDto.builder()
+                .password("Testowanko123!")
+                .passwordConfirm("Testowanko1234!")
+                .build();
+
+        UserSiteRenderDto userSiteRenderDto = UserSiteRenderDto.builder()
+                .roles(new HashSet<>())
+                .picUrl("")
+                .lastName("")
+                .id(UUID.randomUUID())
+                .email("")
+                .firstName("")
+                .enabled(true)
+                .build();
+
+        this.mockMvc
+                .perform(post("/dashboard/profile/password").sessionAttr("userData", userSiteRenderDto).with(csrf()).flashAttr("passwordChange", userPasswordChangeDto))
+                .andExpect(view().name("userProfile"));
+    }
+
+    @Test
+    @WithMockUser
     void shouldRedirectToProfileAfterReceivingFileUpload() throws Exception{
 
         MockMultipartFile profilePicture = new MockMultipartFile("picture_file", "filename.txt", "text/plain", "some data".getBytes());
@@ -83,7 +111,7 @@ public class UserProfileControllerTest {
 
     @Test
     @WithMockUser
-    public void testChangeProfilePictureIOException() throws Exception {
+    public void whenChangeProfilePictureShouldThrowIOException() throws Exception {
 
         MockMultipartFile profilePicture = new MockMultipartFile("picture_file", "filename.txt", "text/plain", "some data".getBytes());
         UUID userId = UUID.randomUUID();
@@ -102,7 +130,7 @@ public class UserProfileControllerTest {
 
     @Test
     @WithMockUser
-    public void testChangeProfilePictureUserNotFoundException() throws Exception {
+    public void whenChangeProfilePictureShouldThrowUserNotFoundException() throws Exception {
 
         MockMultipartFile profilePicture = new MockMultipartFile("picture_file", "filename.txt", "text/plain", "some data".getBytes());
         UUID userId = UUID.randomUUID();
@@ -117,5 +145,31 @@ public class UserProfileControllerTest {
                 .andExpect(MockMvcResultMatchers.flash().attribute("message", "User not found"));
 
         verify(userService, times(1)).changeProfilePicture(profilePicture, userId);
+    }
+
+    @Test
+    @WithMockUser
+    void shouldDisplayUserProfilePageWhenGivenValidRequest() throws Exception {
+        Principal principal = () -> "test@test.com";
+        UserSiteRenderDto userSiteRenderDto = UserSiteRenderDto.builder()
+                .roles(new HashSet<>())
+                .picUrl("")
+                .lastName("")
+                .id(UUID.randomUUID())
+                .email("test@test.com")
+                .firstName("")
+                .enabled(true)
+                .build();
+
+        when(userService.getUserInfoByEmail(any(String.class))).thenReturn(userSiteRenderDto);
+
+        mockMvc.perform(get("/dashboard/profile")
+                        .principal(principal)
+                        .flashAttr("message", "message")
+                )
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("message"))
+                .andExpect(view().name("userProfile"))
+                .andExpect(model().attributeExists("passwordChange"));
     }
 }

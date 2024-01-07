@@ -50,7 +50,6 @@ public class AccessControllerTest {
     @WithMockUser
     void testGetLoginPage() throws Exception {
         this.mockMvc.perform(get("/login"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -348,5 +347,23 @@ public class AccessControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("resetpassword"));
     }
+
+    @Test
+    @WithMockUser
+    void shouldReturnLoginPage() throws Exception{
+        this.mockMvc
+                .perform(get("/login"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser
+    void shouldReturnInvalidSessionPage() throws Exception{
+        this.mockMvc
+                .perform(get("/invalid-session"))
+                .andExpect(status().isOk());
+    }
+
+
 }
 
