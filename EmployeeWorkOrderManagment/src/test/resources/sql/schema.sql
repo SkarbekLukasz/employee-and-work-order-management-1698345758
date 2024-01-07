@@ -3,6 +3,9 @@ DROP TABLE if exists users CASCADE ;
 drop table if exists verification_tokens CASCADE ;
 drop table if exists reset_tokens CASCADE ;
 drop table if exists users_roles CASCADE ;
+drop table if exists tasks CASCADE ;
+
+create sequence if not exists auto_increment_sequence start with 1;
 
 CREATE TABLE if not exists roles
 (
@@ -19,7 +22,7 @@ CREATE TABLE if not exists users
     email                   VARCHAR(45) NOT NULL,
     password                VARCHAR(64) NOT NULL,
     enabled                 BOOLEAN,
-    picture_url             varchar(255),
+    picture_url             VARCHAR(255),
     CONSTRAINT pk_users PRIMARY KEY (id)
 );
 
@@ -50,11 +53,12 @@ CREATE TABLE if not exists users_roles
     CONSTRAINT pk_users_roles PRIMARY KEY (role_id, user_id)
 );
 
+
 ALTER TABLE roles
     drop constraint if exists uc_roles_role_name;
 
 ALTER TABLE roles
-ADD CONSTRAINT uc_roles_role_name UNIQUE (role_name);
+    ADD CONSTRAINT uc_roles_role_name UNIQUE (role_name);
 
 ALTER TABLE users
     drop CONSTRAINT if exists uc_users_email;
@@ -73,3 +77,28 @@ ALTER TABLE users_roles
 
 ALTER TABLE users_roles
     ADD CONSTRAINT fk_userol_on_user FOREIGN KEY (user_id) REFERENCES users (id);
+
+CREATE TABLE if not exists tasks
+(
+    id                   UUID         NOT NULL,
+    project_name         VARCHAR(255) NOT NULL,
+    description          VARCHAR(255)          NOT NULL,
+    task_code            VARCHAR(2048),
+    user_id              UUID         NOT NULL,
+    assigned_designer_id UUID         NOT NULL,
+    task_number          BIGINT       default nextval('auto_increment_sequence'),
+    task_status          SMALLINT,
+    CONSTRAINT pk_tasks PRIMARY KEY (id)
+);
+
+ALTER TABLE tasks
+    drop CONSTRAINT if exists uc_tasks_task_number;
+
+ALTER TABLE tasks
+    ADD CONSTRAINT uc_tasks_task_number UNIQUE (task_number);
+
+ALTER TABLE users_roles
+    drop CONSTRAINT if exists FK_TASKS_ON_USER;
+
+ALTER TABLE tasks
+    ADD CONSTRAINT FK_TASKS_ON_USER FOREIGN KEY (user_id) REFERENCES users (id);

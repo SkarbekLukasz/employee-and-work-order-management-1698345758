@@ -5,6 +5,8 @@ import ls.EmployeeWorkOrderManagment.service.UserService;
 import ls.EmployeeWorkOrderManagment.web.dto.role.RoleDto;
 import ls.EmployeeWorkOrderManagment.web.dto.user.UserSiteRenderDto;
 import ls.EmployeeWorkOrderManagment.web.error.UserNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,8 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/dashboard/users")
 public class UsersDashboardController {
+
+    private static final Logger logger = LoggerFactory.getLogger(UsersDashboardController.class);
 
     private final UserService userService;
     private final RoleService roleService;
@@ -41,6 +45,7 @@ public class UsersDashboardController {
         if(!deleteAttribute.isEmpty()) {
             model.addAttribute("delete", deleteAttribute);
         }
+        logger.info("Successfully loaded all user data.");
         return "userList";
     }
 
@@ -48,6 +53,7 @@ public class UsersDashboardController {
     @GetMapping("/delete")
     public String deleteUserAccount(@RequestParam String id, RedirectAttributes redirectAttributes) {
         userService.deleteUserAccount(id);
+        logger.warn("Successfully deleted account for user: {}", id);
         redirectAttributes.addFlashAttribute("delete", "User account successfully deleted!");
         return "redirect:/dashboard/users";
     }
@@ -62,11 +68,12 @@ public class UsersDashboardController {
         try{
             userService.editUserAccount(roles, enabled, userId);
         } catch (UserNotFoundException exception) {
+            logger.error("User account not found for id: {}", userId.toString(), exception);
             model.addAttribute("message", exception.getMessage());
             return "message";
         }
-        redirectAttributes.addAttribute("edit", "Success! User account edited successfully!");
-
+        redirectAttributes.addFlashAttribute("edit", "Success! User account edited successfully!");
+        logger.info("Successfully edited account for user: {}", userId.toString());
         return "redirect:/dashboard/users";
     }
 }
